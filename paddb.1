@@ -1,0 +1,44 @@
+.\" -*- nroff -*
+.\" $Id: paddb.1,v 1.4 1999/03/31 07:38:57 jcp Exp $
+.\"-------------------------------------------
+.TH PADDB 1 "28 November 1998" PADDB "Flight Planning"
+.\"-------------------------------------------
+.SH NAME
+paddb \- fplan database formatter
+.\"-------------------------------------------
+.SH SYNOPSIS
+.LP
+\fBpaddb\fP \fItext-file database-file\fP
+.br
+.\"-------------------------------------------
+.SH DESCRIPTION
+.LP
+\fBpaddb\fP reads \fItext_file\fP with variable length ASCII records
+and formats it into a \fIdatabase-file\fP with fixed length records that
+can be used by \fBfplan(1)\fP. This is accomplished by first determining
+the longest record in \fItext_file\fP, and then padding each record with
+an appropriate number of ASCII NULL characters.  While this results in
+some inefficiency in the use of disk storage resources, the use of fixed
+length records allows \fBfplan(1)\fP to utilize a fast binary search
+algorithm when doing database lookups.
+.\"-------------------------------------------
+.SH OPTIONS
+.LP
+.TP 5
+.B \-h
+Display a brief description of program usage.
+.TP
+.B \-v
+Enable verbose mode. The number of records read from the input
+file, the maximum input record length, the output record length,
+and the number of truncated records is written to stderr.
+.\"-------------------------------------------
+.SH SEE ALSO
+\fBfplan(1)\fP, \fBfplan(5)\fP
+.LP 
+.\"-------------------------------------------
+.SH AUTHOR
+Steve Tynor \- <tynor@prism.gatech.edu>
+.\"-------------------------------------------
+.SH MAINTAINER
+John C. Peterson \- <jaypee@netcom.com>

@@ -1,0 +1,180 @@
+'\" t
+.\" must preprocess with tbl with troff. -*- nroff -*
+.\" $Id: fplan.1,v 2.19 1998/11/28 06:13:50 jcp Exp $
+.\"-------------------------------------------
+.TH FPLAN 1 "28 November 1998" FPLAN "Flight Planning"
+.\"-------------------------------------------
+.SH NAME
+fplan \- cross country flight planning tool for pilots
+.\"-------------------------------------------
+.SH SYNOPSIS
+.LP
+\fBfplan -l\fP \fIidentifier ...\fP
+.br
+\fBfplan -r\fP (\fI\-\fP|\fIplanfile\fP)
+.br
+\fBfplan -g\fP [xview options] (\fI\-\fP|\fIplanfile\fP)
+.br
+\fBfplan\fP [\fB\-n|w\fP][\fB\-b\fP][\fB\-d\fP][\fB\-e\fP][\fB\-s\fP][\fB\-t\fP] (\fI\-\fP|\fIplanfile\fP)
+.br
+.\"-------------------------------------------
+.SH DESCRIPTION
+.LP
+The \fBfplan\fP application is designed to assist general aviation pilots
+in creating flight plans for cross country flights in powered aircraft.
+It reads a \fIplanfile\fP containing a description of the flight;
+departure and destination airports, navigation aids, intermediate
+waypoints, winds aloft, fuel consumption rates, and produces a flight
+plan including; wind corrected magnetic headings, distance, estimated
+time and fuel consumption for each leg; latitude, longitude and VOR fixes
+for each checkpoint, etc. A complete description of the \fIplanfile\fP
+can be found in the associated user's guide. On some systems, a preview
+of the flight can be displayed in a graphical window.
+.PP
+The first option on the command line controls which of the four major
+modes will be enabled (see the section below for details).  If the
+\fIplanfile\fP argument is ``-'', then \fBfplan\fP will read from
+``stdin''.
+.\"-------------------------------------------
+.SH OPTIONS
+.LP
+.TP 10
+.B \-l
+Select the lookup mode of operation. Lookup the \fIidentifier(s)\fP
+in the databases and print the associated information to the standard
+output. If any identifier was found in both the airports and navigation
+aids databases, then both entries are printed.
+.TP
+.B \-r
+Select the reverse or return mode of operation. A planfile for the return
+trip, based on the input planfile, is written to the standard output. All
+waypoints are reversed and incremental waypoints are recomputed. Correct
+\fBnav\fP directives are included so that each waypoint uses the same VORs
+as in the input planfile. Fuel, wind, airspeed and altitude directives
+are not included in the reversed plan. (A future release may support
+these directives).
+
+.TP
+.B \-g
+Select the graphics preview mode of operation. Preview the flight in a
+graphical window, (systems with the XView Toolkit only, also installation
+dependent). Standard toolkit options (such as \fB-display\fP) may be
+included after \fB-g\fP. The previewer uses the simple unprojected
+latitude and longitude projection system. This really isn't a projection
+system at all, the longitude and latitude values are simply plotted in a
+rectangular coordinate system. Hence, a straight line does not correspond
+to a rhumb line or a great circle course, as is the case for Mercator
+and Gnomonic projection charts respectively. The window is divided into
+two sections: the command panel and the chart. The chart is a canvas
+where the route and each waypoint is drawn. The command panel contains
+the following items:
+
+.br
+	\fBQUIT\fP - Quits the previewer.
+.br
+	\fBTO FIRST\fP - Scrolls the canvas to center the first waypoint.
+.br
+	\fBTO LAST\fP - Scrolls the canvas to center the last waypoint.
+.br
+	\fBBRIEF\fP - Toggles whether incremental waypoints are shown (like the \fB-b\fP option).
+.br
+	\fBSCALE\fP - Sets the magnification scale factor of the chart.
+
+The canvas can be scrolled slowly by selecting the desired arrow, or
+more rapidly by selecting the cable just outside the desired arrow.
+The units of the magnification scale factor are in percent, where
+the default scale of 100 percent fills the current canvas size
+(except for a small margin).
+.TP
+.B \-n
+Select the narrow output format (VOR fixes are not included),
+producing output that is 80 characters wide or less. This option is
+mutually exclusive with the \fB\-w\fP option and is the default.
+.TP
+.B \-w
+Select the wide output format (VOR fixes are included), producing
+output that is 136 characters wide or less (depending on the number of
+active VORs). This option is mutually exclusive with the \fB\-n\fP option.
+.TP
+.B \-b
+Selects \fIbrief\fP mode. Incremental waypoints (points specified
+as relative distances from, to the start, end on a leg) are not included
+in the output form. Useful for seeing the 'big picture'.
+.TP
+.B \-d
+Append a sorted summary of all database objects used in the planfile.
+.TP
+.B \-e
+Use IBM graphics characters on the output form instead of the default
+`+', `-', and `|'. Produces a more readable form if your terminal and/or
+printer is capable of printing IBM graphics characters.
+.TP 
+.B \-s
+Select units of statute miles and miles per hour for the output form. The
+default units are nautical miles and knots. Note that \fIall\fP distances
+and speeds in the \fIplanfile\fP are assumed to be nautical miles and
+knots unless explicitly marked by the \fBmi\fP or \fBmph\fP keywords
+respectively.
+.TP 
+.B \-t
+Enables automatically tracking navaids in the primary nav receiver.
+The auto track algorithm will select (what it thinks is) the best
+navigation aid for use in nav receiver 1, and the user specified nav
+1 assignments are ignored. Since most pilots are ``control freaks'',
+the default is auto track disabled.
+.TP
+.B \-
+Read the planfile from the standard input. If this option is present,
+then no \fIplanfile\fP argument may be specified.
+.\"-------------------------------------------
+.SH ENVIRONMENT
+.B fplan
+recognizes the following environment variables to specify where to
+look for its databases:
+.TP 12
+.B FPLAN_COMMON_DBDIR
+Overrides the directory that is searched for the common, system
+wide databases. The default under Unix and Unix like systems
+is "/usr/share/fplan", the default under OS/2 and MS-DOS systems is
+"\\fplan\\commondb".
+.TP 
+.B FPLAN_USER_DBDIR
+Overrides the directory that is searched for the user's personal
+databases. The default under Unix and Unix like systems is "~/.fplan",
+the default under OS/2 and MS-DOS systems is "\\fplan\\userdb".
+.\"-------------------------------------------
+.SH FILES
+The database files used by \fBfplan\fP are specially formatted for
+quick lookup using a binary search algorithm which requires that each
+record have the same length. Use \fBpaddb\fP to convert an ASCII text
+file with variable length records, into a fixed length record version
+suitable for use with \fBfplan\fP.
+.sp
+.PD 0
+.TP 15
+.B airports.nav
+The airports database in \fBfplan(5)\fP format.
+.TP
+.B vors.nav
+The navigation aids database in \fBfplan(5)\fP format.
+.PD
+.\"-------------------------------------------
+.SH SEE ALSO
+\fBfplan(5)\fP, \fBpaddb(1)\fP
+.LP 
+.\"-------------------------------------------
+.SH AUTHOR
+Steve Tynor \- <tynor@prism.gatech.edu>
+.\"-------------------------------------------
+.SH MAINTAINER
+John C. Peterson \- <jaypee@netcom.com>
+.\"-------------------------------------------
+.SH DISCLAIMER
+     USE AT YOUR OWN RISK! I assume no responsibility for any errors
+in this program, the database or documentation. If you crash and burn
+because, for example, fuel estimates in this program were inaccurate,
+it's your own fault for trusting somebody else's code! Remember, as Pilot
+In Command, it's \fIyour\fP responsibility to do complete preflight
+planning. Use this program as a flight planning aid, but verify its
+results before using them.
+.\"-------------------------------------------

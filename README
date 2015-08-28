@@ -1,0 +1,100 @@
+===============================================================================
+fplan                                README                               fplan
+===============================================================================
+
+$Id: README,v 1.3 1999/05/02 05:04:19 jcp Exp $
+
+
+OVERVIEW
+========
+
+The fplan application is designed to assist general aviation pilots in
+creating flight plans for cross country flights in powered aircraft.
+It was developed primarily for use on systems running the UNIX Operating
+System and the X11 Window System, with particular emphasis on Linux.
+
+The input to fplan is a planfile that can be created with the user's
+favorite plain text editor. A self explanatory language is used to
+describe the flight; departure and destination airports, intermediate
+waypoints, navigation aids, winds aloft, and fuel consumption rates.
+The flight plan produced by fplan includes; wind corrected magnetic
+headings, distance, estimated time and fuel consumption for each leg,
+latitude and longitude for each checkpoint, and optional VOR fixes.
+A graphical preview of the flight is available on systems with X11
+Windows and the XView Toolkit.
+
+For convenience, airports or navaids can be referenced by their ICAO
+identifier in planfiles.  The information that fplan requires is stored in
+database files, indexed by identifier.  For users in the United States,
+freely distributable database files are available that were derived
+from information from the National Flight Data Center.  This data is not
+certified for navigation, and should be verified before actual use. It
+is unfortunate, but there is no known public domain source for similar
+information for areas outside the United States. (See the FAQ for more
+information).
+
+
+AVAILABILITY
+============
+
+The latest release can be obtained from the fplan web site at;
+
+	http://sunsite.unc.edu/fplan/
+
+
+MAILING LIST INFORMATION
+======= ==== ===========
+
+fplan is now officially a GNOME application. As a result, the GNOME
+project hosts a mailing list for interested developers, users.  The list
+is intended to provide a forum for the discussion of fplan development
+tasks and design issues. The list is open to all who would like to
+participate in fplan development, contribute ideas or suggestions, or
+simply lurk to keep track of where things are going.  To join the list,
+send a mail message with the subject "subscribe" and an empty body to
+
+  o  <fplan-list-request@gnome.org>
+
+
+COPYRIGHT AND WARRANTY
+========= === ========
+
+This release of fplan is Copyright (c) 1998 John C. Peterson,
+<jaypee@netcom.com>.
+
+This software package is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License, version
+2. A copy is included in this distribution in the file named LICENSE.
+
+This software package is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License, version 2, for more details.
+
+I'm making this stuff available in the hope that it will be useful to
+other pilots, but you are the final judge of it's accuracy, applicability,
+suitability, etc.  Pilots in the United States should be sure they
+understand the nature of their responsibilities in the area of preflight
+planning. See sections 3, 103, and 151 of part 91 of the FARs for a
+quick refresher.
+
+
+INSTALLATION
+============
+
+See the INSTALL file, or the user's guide which is available in several
+common formats; html, postscript, or plain text. The user's guide is
+included in all the distributions, or you can browse it while online at
+the fplan web site. The file names of the formatted user's guide are
+pretty self explanatory;
+
+	guide.html	# html format
+	guide.ps	# postscript format
+	guide.txt	# plain text format
+
+
+CONTACT INFO
+======= ====
+
+John C. Peterson  FAA PP/ASEL,G
+<mailto:jaypee@netcom.com>

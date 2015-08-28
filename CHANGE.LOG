@@ -1,0 +1,316 @@
+  Change Log for fplan
+  John C. Peterson, <jaypee@netcom.com>
+  Release 1.4.2, 01 May 1999
+
+  1.  Changes in fplan version 1.4.2 (John Peterson on May 01, 1998)
+
+  o  In db.c, fixed a bug in the decoding of magnetic variation,
+     latitude, and longitude. This affected users who had east magnetic
+     variation, south longitude, or east latitude. The sign of the
+     degrees field was not being inherited by the minutes field like the
+     manual states. East magnetic variations were in error by as much as
+     2 degrees.  Thanks to Sid Sharma <nsharma@vsnl.com> who discovered
+     and reported this problem while constructing a personal database
+     for a region of India.
+
+  o  In db.c, some major improvements to the error checking of database
+     records. Completely eliminated the use of atof () in favor of
+     strtod () which conforms to ANSI standards, and has features that
+     allow for much better error checking.
+
+  o  In db.c, massaged much of the code that opens and verifies the
+     consistency of the database files. Some minor improvements to the
+     error checking, and a cleanup of some of the internal data
+     structures.
+
+  o  In main.c; some general cleanup of the option handling. Now using
+     the getopt() function to do the option parsing. Added code to
+     detect inconsistent use of the -l and -r options.
+
+  o  In output_text.c, I tweaked the handling of the conversion of fuel
+     amounts and rates. For those who measure fuel in pounds, values of
+     1000 or higher are now rounded to the nearest integer and without
+     any decimal point character (to stay within the field width).
+
+  o  The functions in output.c were split into two smaller modules.
+     This is to prepare for support of plain text and postscript format
+     output.  The output_text.c file contains the old functions for
+     printing plain text format output. The functions that will be
+     common to both formats are in output.c.
+
+  o  Added the code from Michael K. Johnson for the implementation of
+     the previewer based on the Gnome, Gtk+, Glib libraries. A block of
+     code in preview.c, and some small changes for the conditional
+     compilation in wp_info.h, main.c, and the Makefile. Thanks Michael!
+
+  o  In paddb.c; numerous (but minor) changes to fix a problem that
+     occured when paddb encountered records in the input database that
+     were longer than the internal read buffer. New records were getting
+     injected into the output database that contained junk in them. The
+     main side effect of this was the possibility that the binary sort
+     done by fplan could fail (because the injected junk records were
+     out of order). The new code properly handles any record length you
+     throw at it (output records may still get truncated however).
+     Thanks go to Malcolm Boffey, <malc@siren.eng.sun.com> for
+     identifying and diagnosing this problem.
+
+  o  In paddb.c; added two new command line options, -h and -v for help
+     and verbose output respectively. Changed over to using the getopt()
+     function to handle option parsing. The verbose output gives
+     complete statistics on the input and output record lengths, and
+     number of truncated records.
+
+  2.  Changes in fplan version 1.4.1 (John Peterson on Nov 28, 1998)
+
+  o  Added a new implementation of the graphical previewer based on the
+     XView Toolkit, Sun's replacement for Sunview. The source is freely
+     available, so ports to many Unix/X11 platforms; BSDI, FreeBSD, HP-
+     UX, Linux and others, are widely available. XView was a very
+     natural choice to get things working again, but future GUI
+     development should probably use a different toolkit (XView has been
+     frozen by Sun). I changed the file name from sv_draw.c to preview.c
+     (since it's not really Sunview based anymore).
+
+  o  Reworked the command line option processing code in main.c, mostly
+     to allow standard XView Toolkit options like -display, when using
+     the -g mode. Improved the error checking for bad and inconsistent
+     options, etc.
+
+  o  Moved the definitions of the EXIT_GOOD, EXIT_BAD macros to the
+     wp_info.h header file so that other modules can produce correct
+     exit codes when they decide to stop execution.
+
+  o  In fp_lex.l; changed the lexical scanner to accept other common
+     abbreviations for units of speed; mi, smi, mph can now be used for
+     statute units, and nmi, kts, knots for nautical.
+
+  o  In fp_yacc.y; changed the language syntax so that latitude,
+     longitude waypoints now must include a value for magnetic
+     variation, (you can't convert a true heading to a magnetic one
+     without it). Since this will break some of the existing planfiles
+     out there in net land, I tried to improve the input format. The new
+     format for the numeric entries is degrees, minutes, seconds (colon
+     separated) followed by the north, south or east, west keyword. The
+     entries no longer need to be signed (the old format was a bit
+     confusing since fplan's sign convention for longitude is non-
+     standard).
+
+  o  Other tweaks to fp_yacc.y, the parser generator input file.
+     Converted the typedef for YYSTYPE to the %union convention. It now
+     works fine with bison and byacc. Also, reorganized the rules a
+     little to facilitate much more extensive error checking.
+
+  o  In fp_yacc.y; eliminated the required use of commas "," in the
+     planfile syntax, they are now treated as white spaces. They were
+     used somewhat inconsistently, so this seemed like a clean solution.
+
+  o  Added two completely new waypoint types. I completed the
+     implementation of the Intersection waypoint (Steve had started it)
+     by adding all the spherical trigonometry calculations required.
+     Added a Relative waypoint, described by a direction and distance
+     from a named waypoint (like RNAV coordinates).
+
+  o  Moved the min_max_lat_lon() function to the file misc.c. In the
+     computation of the min, max bounding box values, I added code to
+     account for the latitude, longitude values of all waypoints. The
+     old code was not properly accounting for lat/lon, intersection, or
+     relative waypoints.
+
+  o  In db.c; I added a new function str_tok() to serve as a replacement
+     for where strtok() was used. The documented behavior of strtok() is
+     not consistent with what we need. In particular, when strtok()
+     encounters an empty field (a "::" in our case), it skips over it.
+     However, the database has all kinds of empty fields, so that's
+     clearly not what we want! I discovered this while investigating
+     some mysterious crashes (caused by anomalous downstream behavior).
+     Since I changed this, the code has not crashed on me once!
+
+  o  In db.c; changed the name of the environment variables for the
+     databases to FPLAN_COMMON_DBDIR and FPLAN_USER_DBDIR. The previous
+     terminology; public and private, seemed to suggest that one
+     database contains public usage airports, the other private. I now
+     use the following terms; common or system wide and the user's
+     personal databases, less potential for confusion.
+
+  o  Modified the wind_correct() function in compute.c to be a little
+     more readable, and to check for the rare, but not impossible case
+     of winds too strong to fly a leg.
+
+  o  In compute.c; added the function great_circle_course(), it computes
+     the great circle course and distance between two points with given
+     lat, lon. This was needed for calculations associated with the new
+     intersection and relative waypoints. There was one place in the old
+     code where the rhumb line course calculations were incorrectly
+     used, namely the VOR fixes. It's sort of splitting hairs, but the
+     signals transmitted by the VOR clearly follow great circle paths
+     over a spherical earth.
+
+  o  In compute.c; renamed the course_and_distance() function to
+     rhumb_line_course() to distinguish it from the great circle
+     counterpart.  I also modified it a little to be more stable (in a
+     numeric sense) for the case where the latitudes of the two points
+     differ by a very small amount, but are not exactly equal.
+
+  o  In compute.c; fixed two problems with the locate_incrementals()
+     function. The computation of the latitude, longitude of an
+     incremental waypoint was not precisely correct. The old code
+     incorrectly assumed that a rhumb line course is a straight line in
+     unprojected latitude, longitude coordinates (it is a straight line
+     on a chart using Mercator projection). The difference between the
+     corrected and old computations is small at low to mid latitudes,
+     but larger at latitudes near a pole. I also fixed a small problem
+     with the interpolation of magnetic variation. Incremental waypoints
+     specified by a negative distance (via -10 for example), were not
+     getting calculated exactly right. Not really a serious bug.
+
+  o  In compute.c, changed the macro COLOCATED to a function that
+     returns a BOOLEAN value. The new function version computes the
+     great circle distance between the VOR and the airport, and compares
+     to a threshold distance. This algorithm is invariant with N/S
+     latitude.
+
+  o  In compute.c; completely rewrote the computation of VOR fixes. The
+     code first determines if the aircraft's course is going TO/FROM the
+     given VOR station, and computes the respective fix using the same
+     TO/FROM convention. Rewrote the auto_track function, track_nav1().
+     It now sees VOR stations associated with Intersection and Relative
+     waypoints.
+
+  o  Changed the default for auto track to be disabled. I'm just
+     guessing that most pilots are control freaks like me, and would
+     prefer to have it off by default. The -t flag now enables auto
+     track.
+
+  o  There appeared to be either a lack of documentation, or a bug in
+     the way wind correction was done. The 1.3 release produced correct
+     answers provided that the direction of winds aloft were relative to
+     magnetic north. However, the more convenient convention is to
+     assume the direction of winds aloft are relative to true north.
+     (Since this is the convention used in the winds aloft forecasts
+     from FSS). The code is now designed for the later convention. It
+     converts internally to degrees magnetic before computing the wind
+     correction to the magnetic headings. The wind direction values that
+     are written to the output are in degrees true.
+  o  In output.c; modified the printing on the VOR fixes. The fixes for
+     all of the NAV receivers are associated with the waypoints. Before,
+     receiver 1 was associated with flight legs, and the others were
+     associated with waypoints.
+
+  o  In output.c, modified the format of lat, lon outputs to be in units
+     of degrees, minutes, seconds. Also changed the name of the function
+     decimal_2_degrees_min -> decimal_2_deg_min_sec, and modified it to
+     round to the nearest second, (more robust, now it won't return
+     strange values like 40 deg, 60 min instead of just 41 deg, 00 min).
+
+  o  In output.c; I fixed a problem with the printing of the distance to
+     the VOR in the VOR fixes, and the velocity of winds aloft. They
+     were not being printed in statue miles and statue miles per hour
+     respectively when the -s option was present (as the documentation
+     claims).
+
+  o  In output.c, modified the field widths some to improve the
+     readability (narrow format now uses exactly 80 chars). Also
+     improved the headers some to be more precise and readable.
+
+  o  Some small changes to complete the conversion from the "version.h"
+     to "patchlvl.h" header file done by Steve in his non-public 1.4
+     release. The C code was still including the old "version.h" file.
+
+  o  Pretty major renaming of variables. Cleaned up some subtle cases of
+     inconsistent terminology; heading vs. course, etc. The specific
+     changes are far too extensive to list in detail. (In other words,
+     I'm too lazy to list them here :^).
+
+  o  For a sanity check, I built fplan with my favorite debugging malloc
+     library, dmalloc. Then I really ran it through the hoops, and the
+     result was a clean bill of health, no problems to report.
+
+  o  Converted everything over to use ANSI C, with function prototypes.
+     This would have been a hideous job to do by hand, but it was really
+     quite easy to do with the cproto utility.
+
+  o  Many changes to the Makefile to enhance portability. Added
+     configuration macros for LEX, YACC. Added mechanism to control use
+     the use of system string functions versus those provided in Steve's
+     string.c module.
+
+  o  Converted the NEW_FEATURES file over to SGML so tedious hand
+     formatting is no longer required. I reordered everything into
+     reverse chronological order, (with most recent changes first). The
+     formatted version of the file is now called CHANGE.LOG.
+
+  o  Completely reorganized and rewrote many of the flat text
+     documentation files (i.e. README). Added the LICENSE file (the GNU
+     General Public License, version 2), the INSTALL file with
+     information on how to build fplan from source, the INSTALL.bin with
+     information on installing the Linux binary distribution, and the
+     INSTALL.emx file with information on installing the OS/2, MD-DOS
+     binary distribution.
+
+  o  Stripped out the description of the planfile syntax from the man
+     page and moved everything to the new SGML format user's guide.
+     Added lots of extra information and examples.
+
+  3.  Changes in fplan version 1.4 (Steve Tynor, no public release)
+
+  o  Removed the use of the (apparently not very portable) aint()
+     function.
+  o  All extern declarations moved to file scope (for better
+     portability).
+
+  o  Modified the time formatting function to include a leading colon
+     for times less than an hour.
+
+  o  Added fp_lex.c, fp_yacc.c and fp_tok.h to the distribution for
+     those building fplan without lex/yacc (or flex/bison).
+
+  o  Added the patchlvl.h file to help track future patches.
+
+  4.  Changes in fplan version 1.3 (Steve Tynor on Jun 28, 1992)
+
+  o  Fixed the longitude calculation to allow for negative values (for
+     those intrepid European net aviators).
+
+  5.  Changes in fplan version 1.2 (Steve Tynor on Nov 18, 1991)
+
+  o  Fixed the mag variation computation.
+
+  o  Fixed the TO/FROM logic for VORs.
+
+  6.  Changes in fplan version 1.1 (Steve Tynor on Nov 20, 1989)
+
+  o  Added 'return' (-r) switch to produce the return trip version of an
+     input plan.
+
+  o  Ported to MessyDOS (tested with MSC and Zortech compilers).
+     Reports from users of FPLAN 1.0 indicate that it ports fairly
+     easily to other flavors of Unix.
+
+  o  Added a graphic previewer for Sunview.
+
+  o  Added DME fields to VOR fixes.
+
+  o  Slight change in output form.
+
+  o  Added database summary (-d) option (appends a description of each
+     airport and navaid used to the end of the flight plan).
+
+  o  Fixed a bug that sometimes printed negative headings.
+
+  o  Fixed a bug that prevented refueling at an enroute airport.
+
+  o  Added index(3) to the strings.c file. Can anyone suggest a way to
+     portably handle the myriad of different string(3) libraries without
+     totally redefining everything?
+
+  o  Changed a right recursive rule in grammar to left recursion -
+     longer plans now supported.
+
+  o  Added documentation on the database file format for those without
+     access to the NAV documentation or source.
+
+  o  Added a database formatter for creating private databases.
+
+  o  Incremental waypoints may now be specified as a distance to the
+     next turn point as well as from the last.
+

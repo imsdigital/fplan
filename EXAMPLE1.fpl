@@ -1,0 +1,83 @@
+#!fplan -w
+#
+# $Id: EXAMPLE1.fpl,v 1.1 1998/11/28 06:06:53 jcp Exp $
+#
+# -----------------------------------------------------------------------------
+#
+# Example No. 1
+#
+# This is a simple example, designed to serve as a quick introduction.
+# It uses a minimal number of fplan statements, but yet enough to produce
+# a practical flight plan.
+#
+# -----------------------------------------------------------------------------
+#
+# Use one the following forms of the fplan command. Either configure your
+# file manager, or just enter it into your favorite command shell. The first
+# form generates the default narrow format output (without VOR fixes). The
+# second form generates wide output, with VOR fixes, and requires a terminal
+# screen 98 characters wide. The third enables the autotrack feature, and
+# the fourth displays a graphic preview of the route(s).
+#
+# fplan EXAMPLE1.fpl		# default narrow output (80 chars wide)
+#
+# fplan -w EXAMPLE1.fpl		# wide output with VOR fixes (98 char wide)
+#
+# fplan -w -t EXAMPLE1.fpl	# wide output, with autotrack enabled
+#
+# fplan -g EXAMPLE1.fpl		# graphical preview of flight (requires XView)
+#
+# -----------------------------------------------------------------------------
+#
+# The enclosed comments are all optional, I've included them solely for
+# their instructional value. However, they are very useful for keeping
+# everything organized as you had intended. As you can see, comments
+# can start at the beginning, or in the middle of a line.
+#
+# -----------------------------------------------------------------------------
+
+# usable fuel for full tanks on the Cessna 172N (gallons of course)
+fuel_amount 40.0;
+
+# est. fuel burn rate for 67% power, 2500 RPM, @ 6,000 FT MSL (gallons / hour)
+fuel_rate 7.6;
+
+# estimated true airspeed for 67% power, 2500 RPM, @ 6,000 FT MSL (knots)
+tas 115;
+
+# forecasted winds aloft for 6,000 FT MSL from flight service (rel to true N)
+wind 310 @ 15 kts;
+
+# -----------------------------------------------------------------------------
+
+from KRPD;			# departure airport
+
+# -----------------------------------------------------------------------------
+
+via LAMPY;			# published intersection from database
+				# another way would be to use the fplan
+				# intersection waypoint, namely;
+				#
+				#      via DLH 159.86 HYR 260;
+
+# -----------------------------------------------------------------------------
+
+via DLH;			# VOR/DME waypoint
+
+# -----------------------------------------------------------------------------
+
+via TWM;			# NDB waypoint
+
+# -----------------------------------------------------------------------------
+
+via BFW;			# NDB waypoint
+
+# -----------------------------------------------------------------------------
+
+via +25;			# incremental waypoint, 25 nmi out
+
+# -----------------------------------------------------------------------------
+
+to KCKC;			# destination airport
+
+# end of planfile

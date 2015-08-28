@@ -1,0 +1,192 @@
+.\" -*- nroff -*
+.\" $Id: fplan.5,v 1.2 1998/11/28 06:13:50 jcp Exp $
+.TH FPLAN 5 "28 November 1998" FPLAN "Flight Planning"
+.SH "NAME"
+airports.nav, vors.nav \- databases for the fplan flight planning program
+.SH "SYNOPSIS"
+.B airports.nav
+.B vors.nav
+.SH "DESCRIPTION"
+.PP
+These files (\fIairports.nav\fP, and \fIvors.nav\fP) contain information
+about airports and and radio navigation aids. The files consist of any
+number of records in the formats described below. Each record contains
+a series of fields, separated by colons (:) and is null-padded to a fixed
+length which allows \fBfplan(1)\fP to use a fast binary search algorithm
+for database searches. The \fBpaddb(1)\fP companion program can be used
+to convert a text file into a \fBfplan(1)\fP compatible database file.
+The records must occur in increasing lexigraphic (alphabetical) order.
+.SH AIRPORTS DATABASE (airports.nav)
+.PP
+The records of the
+.B airport.nav
+database consist of the following fields, separated by colon (:)
+characters. All of the fields are required, however some of them
+can be blank.
+.TP 10
+Airport Identifier
+The official airport identifier, typically three or four alphanumeric
+characters. All letters must be uppercase. Airports identifiers can be
+at most five characters long. Note: for private databases, the airport
+identifiers may begin with the underscore (_) character in order to
+distinguish them from the official airport identifiers.
+.TP
+City, State
+The city and state associated with this airport,
+up to thirty two characters long.
+.TP
+Name
+The official airport name, up to thirty two characters long.
+.TP
+Elevation
+The airport elevation, specified in feet above mean sea level.
+.TP
+Magnetic Variation (degrees)
+The magnetic variation at the airport, rounded down to the nearest
+degree. Positive numbers indicate \fIwest\fP variation, while
+negative numbers indicate \fIeast\fP variation.
+.TP 
+Magnetic Variation (minutes)
+The minutes portion of the variation, which can have a fractional
+part if greater accuracy is desired (e.g. 12.9).
+.TP
+Latitude (degrees)
+The \fIdegrees\fP portion of the latitude of the airport. A positive
+number indicates \fInorth\fP latitude, while a negative number indicates
+\fIsouth\fP latitude.
+.TP 
+Latitude (minutes)
+The minutes portion of the latitude, which can have a fractional
+part if greater accuracy is desired (e.g. 45.1398).
+.TP 
+Longitude (degrees)
+The \fIdegrees\fP portion of the longitude of the airport. A positive
+number indicates \fIwest\fP latitude, while a negative number indicates
+\fIeast\fP latitude. (I know, this is not the most common convention).
+.TP 
+Longitude (minutes)
+The minutes portion of the longitude, which can have a fractional
+part if greater accuracy is desired (e.g. 45.1398).
+.TP 
+CTAF
+The common traffic avoidance frequency for the airport.
+This field can be empty.
+.TP
+Comments
+A comment that provides additional information about the airport. For
+example, this might describe other frequencies at the airport, the
+presence of a flight service station, availability of fuel or services,
+or the sectional chart on which the airport appears.
+.PP
+Here is a sample record:
+.sp
+.ce 1
+"1C6:Polo, IL:Radio Ranch:840:-01:0:41:58.7:89:33.6:122.8:Chicago Sect."
+.sp
+is for Radio Ranch airport in Polo, IL. The airport identifier is 1C6. Its
+elevation is 840 feet. The local magnetic variation is 1 degree, 0 minutes
+east. Its geographic coordinates (latitude and longitude) are 41 degrees,
+58.7 minutes north, 89 degrees, 33.6 minutes west. Its CTAF frequency is
+122.8. The comment field indicates the sectional chart where the airport
+may be found (the Chicago sectional in this case).
+.SH NAVIGATION AIDS DATABASE (vors.nav)
+The records of the
+.B vors.nav
+database consist of the following fields, separated by colon (:)
+characters. All of the fields are required, however some of them
+can be blank.
+.TP 10
+Navaid Identifier
+The identifier of the navigation aid, waypoint, or fix. This field should
+be in all upper case, with at most five alphabetic characters. Note: for
+private databases, the navaid identifiers may begin with the underscore
+(_) character in order to distinguish them from the official navaid
+identifiers.
+.TP
+Name
+The official name of the navigation aid, up to thirty-two characters.
+For a fix, this field will contain the principle use of the fix.
+.TP
+Frequency 
+The operational frequency of this navigation aid.
+.TP 
+Elevation
+The navaid elevation, specified in feet above mean sea level.
+.TP
+Magnetic Variation (degrees)
+The magnetic variation at the navaid, rounded down to the nearest
+degree. Positive numbers indicate \fIwest\fP variation, while
+negative numbers indicate \fIeast\fP variation.
+.TP 
+Magnetic Variation (minutes)
+The minutes portion of the variation, which can have a fractional
+part if greater accuracy is desired (e.g. 12.9).
+.TP
+Latitude (degrees)
+The \fIdegrees\fP portion of the latitude of the airport. A positive
+number indicates \fInorth\fP latitude, while a negative number indicates
+\fIsouth\fP latitude.
+.TP 
+Latitude (minutes)
+The minutes portion of the latitude, which can have a fractional
+part if greater accuracy is desired (e.g. 45.1398).
+.TP 
+Longitude (degrees)
+The \fIdegrees\fP portion of the longitude of the navaid. A positive
+number indicates \fIwest\fP latitude, while a negative number indicates
+\fIeast\fP latitude. (I know, this is not the most common convention).
+.TP 
+Longitude (minutes)
+The minutes portion of the longitude, which can have a fractional
+part if greater accuracy is desired (e.g. 45.1398).
+.TP 
+Navaid or Fix Type
+The type of the navigation aid or fix;
+.nf
+.IP
+VOR \(em VOR (no distance determination facilities)
+DME \(em VOR-DME (or VORTAC)
+TAC \(em TACAN
+ILS \(em Localizer
+LMM \(em Locator Middle Marker
+LOM \(em Locator Outer Marker
+NDB \(em Non-Directional Beacon
+INT \(em Intersection
+WPT \(em Waypoint
+UNK \(em Unknown
+.fi
+.TP 
+Comments
+A comment that provides additional information about the navaid or
+fix. For example, this might describe, the state where the navaid is
+located, the flight service station or ATC facility associated with or
+controlling it, or, for a fix, the navaids and radials that define it.
+.PP
+Here are some sample records;
+.sp
+.ce 4
+"GUS:Grissom:116.50:810:02:0:40:38.7:86:9.1:DME:T [IN] IND FSS"
+"ROM:Priest:110.0:3880:-16:00:36:8.4:120:39.8:VOR:L PRB FSS"
+"EZB:East Bay:362::-17:0:37:44.6:122:13.1:NDB:[CA] OAK FSS"
+"AUGUS:ENRT-LOW:0:0:03:0:38:17.9:87:16.4:INT:PXVr043d31 & SAMr103"
+.sp
+.PP
+The first of these is for the Grissom VOR/DME, with identifier GUS and
+frequency 116.5. The second is for the Priest VOR, identifier ROM on
+frequency 110.0. The third is for the East Bay NDB, frequency 362 and
+identifier EZB. The last example is for the AUGUS intersection, which
+is an enroute-low intersection (appears on an enroute low-altitude
+navigation chart).
+.SH "FILES"
+airports.nav, vors.nav
+.SH "SEE ALSO"
+fplan(1), paddb(1)
+.SH AUTHORS
+Alan Marcum \- <marcum@nescorna.sun.com> \- author of \fBnav\fP
+.br
+.sp
+Steve Tynor \- <tynor@prism.gatech.edu> \- author of \fBfplan\fP
+.sp
+.SH MAINTAINER
+John C. Peterson \- <jaypee@netcom.com>
+

@@ -1,0 +1,173 @@
+<HTML>
+<HEAD>
+<TITLE>User's Guide for fplan: Additional Information</TITLE>
+</HEAD>
+<BODY>
+<A HREF="guide-3.html">Previous</A>
+Next
+<A HREF="guide.html#toc4">Table of Contents</A>
+<HR>
+<H2><A NAME="s4">4. Additional Information</A></H2>
+
+<H2><A NAME="ss4.1">4.1 Code History</A></H2>
+
+<P>Although this software retains the name fplan, it is a derivative
+of the original work of 
+<A HREF="mailto:tynor@atlanta.twr.com">Steve Tynor</A>.  His last public release was version 1.3, which was
+posted to volume 30 of the USENET newsgroup, comp.sources.misc in 1992.</P>
+
+<P>I've been using fplan to prepare flight plans since release 1.2,
+so I've had the opportunity to use it in practice and formulate some
+ideas for possible improvements. The unusual El Ni&ntilde;o driven
+rains we experienced in San Diego during the first few months of 1998
+are largely responsible for this effort. One rain soaked weekend in Jan
+I decided to implement some of the improvements from my own want list (as
+a flimsy substitute for actually getting my feet off the ground). I
+later contacted Steve Tynor with these changes. He indicated he was
+busy with other things and was no longer actively maintaining fplan.
+I decided to expand the scope of my improvements enough to get things back
+to a point where more pilots will be inclined to use it again <EM>and</EM>
+contribute to further development of it. The name fplan was retained
+with Steve's blessing.</P>
+
+
+<H2><A NAME="future-plans"></A> <A NAME="ss4.2">4.2 Future Plans</A></H2>
+
+<H3>Graphical User Interface</H3>
+
+<P>Planning and preparations for a graphical user interface for fplan
+have begun. This will let users construct, load, and save planfiles
+using a point and click interface. Michael K. Johnson <CODE>
+<A HREF="mailto:johnsonm@redhat.com">&lt;johnsonm@redhat.com&gt;</A></CODE>
+has started this effort by writing an implementation of the graphical
+previewer based on the Gnome, Gtk+, Glib libraries.  Michael quickly
+convinced me that the Gnome environment would be the best choice for
+further development of a GUI interface, and fplan is now officially
+part of the 
+<A HREF="http://www.gnome.org/">Gnome Project</A>.
+As a result, the fplan project now has a CVS repository to facilitate
+development by multiple programmers (also see 
+<A HREF="#mailing-list">Mailing List</A> below).  A final product is not due for awhile, the
+fplan internal data structures will require some extensive modifications
+before work can proceed.</P>
+
+<H3>Planning from Digital Charts</H3>
+
+<P>Some of the currently available commercial flight planning programs
+provide a GUI interface that allows you to point and click on the desired
+flight waypoints from a "sectional quality" chart display. Of course,
+I agree with those who think this is a very desirable feature. However,
+any digital chart (hybrid raster and vector) that could be assembled from
+data currently available from government sources would be inferior to
+hardcopy NOAA Sectional Charts. (This is consistent with the observation
+that the cost of digital chart updates from these commercial offerings
+range from kinda, to really expensive). Hopefully, NOAA will someday
+release their charts in a digital form at prices comparable with current
+hardcopy charts (and using data formats that are open to the public). When
+good quality digital charts become a reality, I will become motivated
+to develop a similar GUI front end for fplan. You can get the current
+status of efforts in this area from the NOAA Office of Aeronautical
+Charting and Cartography web site at</P>
+<P>
+<UL>
+<LI><CODE>
+<A HREF="http://acc.nos.noaa.gov/">http://acc.nos.noaa.gov/</A></CODE></LI>
+</UL>
+</P>
+
+<H3>Interfacing with GPS Units</H3>
+
+<P>Of the other possible fplan improvements I've thought of, the one that
+most interests me is a better interface with GPS receivers.  I suspect
+that most other pilots who have GPS capability are like myself.  I prefer
+using it over VORs because of the accuracy, the flexibility and freedom
+it offers in constructing a flight route, as well as the reduced cockpit
+work loads. (At the same time I'm quite wary of the planned decommission
+of the VOR system. It's important to have a back up system available
+if possible).</P>
+
+<P>Systems like GPS and INS have a unique set of problems when it comes
+to human factors. Incorrectly entering a waypoint can be the start of
+much bigger problems.  The ability to generate a waypoint or route file
+(in a format such that it can be uploaded directly to your GPS receiver)
+from an fplan route would be a very nifty capability. There is already an
+abundance of freely distributable programs for uploading and downloading
+route and waypoint files to many popular GPS units.</P>
+
+
+<H2><A NAME="mailing-list"></A> <A NAME="ss4.3">4.3 Mailing List</A></H2>
+
+<P>The 
+<A HREF="http://www.gnome.org/">Gnome Project</A> now hosts
+a mailing list for fplan developers. The list is intended to provide a
+forum for the discussion of fplan development tasks and design issues. The
+list is open to all who would like to participate in fplan development,
+contribute ideas or suggestions, or simply lurk to keep track of where
+things are going. To join the list, send a mail message with the subject
+"subscribe" and an empty body to
+<UL>
+<LI><CODE>
+<A HREF="mailto:fplan-list-request@gnome.org">&lt;fplan-list-request@gnome.org&gt;</A></CODE></LI>
+</UL>
+</P>
+
+
+<H2><A NAME="ss4.4">4.4 Other Software</A></H2>
+
+<H3><A NAME="avdbtools-software"></A> avdbtools</H3>
+
+<P>The databases distributed with fplan were created using the avdbtools
+package (short for aviation database tools). The package is a collection
+of software designed to assist in creating and maintaining databases for
+aviation applications. As of this release, avdbtools consists of a single
+application that reads the databases distributed by the (United States)
+National Flight Data Center, and converts them into formats usable by
+other aviation related applications (fplan and ICAO map to be specific).
+More information can be found on the avdbtools page at
+<UL>
+<LI><CODE>
+<A HREF="http://metalab.unc.edu/fplan/avdbtools/">http://metalab.unc.edu/fplan/avdbtools/</A></CODE></LI>
+</UL>
+</P>
+
+
+<H2><A NAME="ss4.5">4.5 Acknowledgements</A></H2>
+
+<H3>Contributors</H3>
+
+<P>Michael K. Johnson <CODE>
+<A HREF="mailto:johnsonm@redhat.com">&lt;johnsonm@redhat.com&gt;</A></CODE> contributed the implementation
+of the graphical previewer based on the Gnome, Gtk+, Glib libraries.
+He is also working on a configurable, template based Postscript(tm)
+format output for flight plans.</P>
+
+<H3>Other Acknowledgements</H3>
+
+<P>I want to thank
+<A HREF="mailto:tynor@atlanta.twr.com">Steve Tynor</A>
+for authoring fplan and making it freely available for everyone to use and
+enjoy. The high quality of his work made it easy for me to gain a level
+of understanding of the fplan internals sufficient to make changes and
+improvements of my own. I also want to extend my gracious thanks to both
+<A HREF="http://metalab.unc.edu/">METALab</A> and the
+<A HREF="http://www.unc.edu/">University of North Carolina at Chapel Hill</A>
+for providing space on their web server for the fplan home page.</P>
+
+
+<H2><A NAME="ss4.6">4.6 Contacting the Author</A></H2>
+
+<P>If you find a bug in this software (especially if you also have a
+patch for it) you can contact me by electronic mail at <CODE>
+<A HREF="mailto:jaypee@netcom.com">&lt;jaypee@netcom.com&gt;</A></CODE>.
+Questions, comments, or suggestions are welcome. I respond to all my
+e-mail, but please remember, this <EM>is</EM> a free software project
+and I do prefer flying real aircraft over playing with my computer,
+so don't be alarmed if you don't get an immediate reply.</P>
+
+
+<HR>
+<A HREF="guide-3.html">Previous</A>
+Next
+<A HREF="guide.html#toc4">Table of Contents</A>
+</BODY>
+</HTML>

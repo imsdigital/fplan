@@ -1,0 +1,206 @@
+===============================================================================
+fplan                            SOURCE INSTALL                           fplan
+===============================================================================
+
+$Id: INSTALL,v 1.3 1999/05/02 05:04:17 jcp Exp $
+
+Building fplan from Source Code
+======== ===== ==== ====== ====
+
+  Users with architectures and operating systems for which binaries are
+  not available will need to build fplan from source code. The source
+  distribution is available from the fplan download page on the world
+  wide web. For users with Unix based environments, the source is
+  available in Red Hat Package Manager and compressed tar formats. The
+  source is also available in Info Zip format for users with non-Unix
+  based environments. Some general software requirements for build fplan
+  from source are discussed below.
+
+General Requirements
+======= ============
+
+  The graphical previewer option in the original version of fplan
+  required the Suntools Toolkit, available only on Unix based systems
+  from Sun Microsystems. However, since the switch from SunOS to
+  Solaris, Suntools is no longer being distributed by Sun. This release
+  of fplan uses the very similar XView Toolkit, distributed by Sun in
+  both binary and source form. This makes the fully functional fplan
+  significantly more portable since XView has been ported by the user
+  community to many popular Unix/X11 based environments such as, BSDI,
+  FreeBSD, HP-UX, Irix, Linux, Solaris, Unixware, etc.
+
+  Alternatively, you can build with a previewer based on the new Gtk+
+  toolkit and GNOME application toolkit (look for GFX_GNOME in the
+  Makefile; requires gnome-libs 0.99.3 or higher).  Once GNOME is more
+  widely available (it is only in beta testing as I write this), the
+  GNOME version will become the default.  At that time, we plan to add a
+  graphical front end to all of fplan's features (while maintaining
+  every current ability to use it in text-only mode).
+
+  Incidentally, the GNOME front end should eventually make fplan more
+  portable than the XView version allows, as the Gtk+ toolkit is
+  portable to many different display systems, and in particular, has
+  already been ported to the MS Windows environment.
+
+  With the previewer disabled, fplan can be built on a wide variety of
+  operating systems, including most non-Unix systems.  The specific
+  requirements for building fplan are described below. If you have
+  information regarding building fplan in other environments (Amiga,
+  BeOS, Macintosh MPW, etc.), let me know and I'll update the
+  information.  Below is a list of the software development tools you
+  will need.
+
+     ANSI C Compiler
+        I have converted the fplan source to ANSI C to take advantage of
+        the better error checking that comes with function prototypes.
+        (The original fplan was written in K & R style C). If you don't
+        have an ANSI C compiler, the Free Software Foundation's GNU C
+        compiler is an excellent choice (in addition to being completely
+        free). Note that some of the C library functions used are not
+        part of the ANSI standard, so with some compilers you need to
+        include a flag to enable what is often called extended ANSI mode
+        (for example: -Ae under HP-UX). Although most systems still have
+        these functions, there are implementations of them in the file
+        strings.c just in case.
+
+     Lexical Analyzer Generator
+        You won't actually need lex, flex, or any other lexical analyzer
+        generator, unless you want to change the scanner description
+        file, fp_lex.l. A default scanner is provided in the file
+        fp_lex.c, which was generated with flex. If you use a scanner of
+        your own, it must be lex compatible. To enable lex compatibility
+        with flex, you must include the -l flag on the flex command
+        line.
+
+     Parser Generator
+        You won't need a parser generator either, unless you want to
+        change the parser description file fp_yacc.y. A default parser
+        is provided in the file fp_yacc.c, which was generated using
+        Robert Corbett's byacc. If you use your own parser generator, it
+        should be configured to write fixed output files, y.tab.c and
+        y.tab.h like ATT yacc.  The correct flags for ATT yacc, byacc,
+        and Bison are included in the provided Makefile.
+
+     XView Toolkit
+        If you want to use the default implementation of the graphics
+        previewer under Unix/X11, you will need Sun Microsystem's XView
+        Toolkit. You can also build fplan without the previewer, in
+        which case you don't need XView. The full source code for the
+        XView Toolkit is available from the directory
+
+        o   <ftp://ftp.x.org/R5contrib/xview3.2/>
+
+        You will probably not want to build XView from source (although
+        you can do it). You are better off just installing pre-built
+        binaries, if they are available for your system. Here are some
+        locations where you can obtain pre-built XView binaries for
+        several different platforms
+
+        o  FreeBSD:  <ftp://ftp.freebsd.org/pub/FreeBSD/packages-current/x11/>
+
+        o  HP-UX:  <ftp://ftp.csc.liv.ac.uk/pub/xview3.2/>
+
+        o  Linux:  <ftp://metalab.unc.edu/pub/Linux/X11/libs/xview/>
+
+        o  Sun Solaris: ships with it already installed!
+
+        Of the above, I can vouch only for the HP-UX binaries. They seem
+        to work fine under HP-UX 10.20. I've also successfully tested
+        fplan under Sun Solaris 5.2. If you have better information,
+        drop me a note and I will add or make appropriate corrections to
+        the above list.
+
+     GNOME and Gtk+ Toolkits
+        If you want to use the optional GNOME implementation of the
+        graphics previewer under Unix/X11, you will need the latest
+        gnome-libs (0.99.3 or higher) and the latest Gtk+ libraries.
+        They are available from
+
+        o   <http://www.gnome.org/>
+
+        o   <http://www.gtk.org/>
+
+        Once the GNOME libraries are more widely available (they came
+        out of beta only just recently), the GNOME version will become
+        the default.
+
+     Make Utility
+        Although it's not really essential, it's very helpful to have a
+        make utility. The provided Makefile is not very complicated. It
+        should work with most Unix make utilities, as well as ports of
+        make to non-Unix environments. For building under OS/2 and MS-
+        DOS using the GCC/EMX compiler by Eberhard Mattes, use
+        Makefile.EMX.
+
+Configuration and Compilation
+============= === ===========
+
+  Here is an outline of the steps required to build fplan from source;
+
+  1. Edit the config.h header file to specify the directories where
+     fplan will look for the common, system wide and the user's personal
+     database files. The directory for the common database files must be
+     consistent with where the Makefile will install them (part of the
+     next step).
+
+  2. Edit the Makefile to reflect your environment. You will need to
+     edit various macros to specify which compiler to use, where the
+     XView header and library files reside, and where things should be
+     installed. I won't go into specifics here since each macro you will
+     need to edit is described by comments in the Makefile.
+
+  3. Run "make" to build the executables. If the build fails at some
+     point, it is possible that your changes to the Makefile in the
+     above step don't correctly reflect your environment.
+
+  4. Run "make install" to install the executables. If you are
+     installing fplan in directories like /usr/bin that are owned by
+     root, this step (and the next two) will likely require that you log
+     in as root to have the required privileges.
+
+  5. Run "make install-man" to install the man pages. If you want to
+     install the html format of the user's guide for browsing online,
+     you will need to do that by hand.
+
+  6. To install the database files, unpack the airports.nav and vors.nav
+     files from the database distribution into the build directory. Then
+     run "make install-dbs" to install them into the directory where
+     fplan expects them.
+
+  The user's guide (this document) is written in SGML (Standard
+  Generalized Markup Language) format. SGML documents are translatable
+  into popular formats such as standard HTML as well as LaTeX (and dvi,
+  postscript from there). The converted formats are up to date with
+  respect to the SGML version when the distribution was packaged (by
+  running a "make doc"). If you make changes to the master SGML format
+  documents, you will need the SGMLtools formatting system to update the
+  other formats, available from
+
+  o   <http://www.sgmltools.org/>
+
+Building from the Source RPM Package
+======== ==== === ====== === =======
+
+  For Red Hat Linux users that want to rebuild from source, the RPM
+  format of the source distribution is the obvious choice. If you insist
+  on using graphical user interfaces to do things, you're going to have
+  to grit your teeth this time. Here's an outline of the commands used
+  to rebuild and install the new package;
+
+                    # install the fplan source package
+                    % rpm -Uhv /path_to_src_package/fplan-1.4.2-1.src.rpm
+                    # change to the directory where spec file is located
+                    % cd /usr/src/redhat/SPECS
+                    # build the binary package
+                    % rpm -bb fplan.spec
+                    # install the binary package
+                    % rpm -Uhv ../RPMS/i386/fplan-1.4.2-1.i386.rpm
+
+  Of course, you have to be the root user to do the above. Unlike the
+  binary distribution, you must have the XView header files and
+  libraries installed on your system to rebuild from source. If you
+  don't already have them, you can likely find them from the extensive
+  RPM database maintained by the rpm2html developers at
+
+  o   <http://rufus.w3.org/linux/RPM/>.
+

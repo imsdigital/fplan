@@ -1,0 +1,11 @@
+  Known Bugs in fplan
+  John C. Peterson, <jaypee@netcom.com>
+  Release 1.4.2, 01 May 1999
+
+  1.  Known Bugs in fplan
+
+  o  The graphical previewer doesn't work correctly for the case of a
+     route that spans the international date line. (Branch cuts of
+     trigonometric functions are sure a major PITA). A fix for this has
+     been formulated, but not implemented.
+

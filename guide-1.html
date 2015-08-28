@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+<TITLE>User's Guide for fplan: Introduction</TITLE>
+</HEAD>
+<BODY>
+Previous
+<A HREF="guide-2.html">Next</A>
+<A HREF="guide.html#toc1">Table of Contents</A>
+<HR>
+<H2><A NAME="s1">1. Introduction</A></H2>
+
+<H2><A NAME="ss1.1">1.1 About fplan</A></H2>
+
+<P>The fplan application is designed to assist general aviation pilots in
+creating flight plans for cross country flights in powered aircraft.
+It was developed primarily for use on systems running the UNIX Operating
+System and the X11 Window System, with particular emphasis on Linux.</P>
+
+<P>The input to fplan is a planfile that can be created with the user's
+favorite plain text editor. A self explanatory language is used to
+describe the flight; departure and destination airports, intermediate
+waypoints, navigation aids, winds aloft, and fuel consumption rates.
+The flight plan produced by fplan includes; wind corrected magnetic
+headings, distance, estimated time and fuel consumption for each leg,
+latitude and longitude for each checkpoint, and optional VOR fixes.
+A graphical preview of the flight is available on systems with X11
+Windows and the XView Toolkit.</P>
+
+<P>For convenience, airports or navaids can be referenced by their ICAO
+identifier in planfiles.  The information that fplan requires is stored in
+database files, indexed by identifier.  For users in the United States,
+freely distributable database files are available that were derived from
+information from the National Flight Data Center. This data is <EM>not</EM>
+certified for navigation, and should be verified before actual use. It
+is unfortunate, but there is no known public domain source for similar
+information for areas outside the United States. (See the FAQ for more
+information).</P>
+
+
+<H2><A NAME="ss1.2">1.2 Copyright</A></H2>
+
+<P>This release of fplan is Copyright (c) 1998,1999
+John C. Peterson, <CODE>&lt;jaypee@netcom.com&gt;</CODE>.</P>
+
+<P>This software package is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License,
+version 2. A copy is included in this distribution in the file
+named <CODE>LICENSE</CODE>.</P>
+
+<P>This software package is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License,
+version 2 for more details.</P>
+
+<P>I am making this stuff available in the hope that it
+will be useful to other pilots, but <EM>you</EM> are the final judge of its
+accuracy, applicability, suitability, etc. Pilots in the United States
+should be sure they understand the nature of their responsibilities in
+the area of preflight planning. See sections 3, 103, and 151 of part
+91 of the 
+<A HREF="http://www.faa.gov/avr/afs/fars/far_idx.htm">FARs</A> for a quick refresher.</P>
+
+
+<H2><A NAME="ss1.3">1.3 Change History</A></H2>
+
+<P>The original author of fplan is Steve Tynor. His last public release
+was version 1.3, which was posted to volume 30 of the USENET newsgroup,
+comp.sources.misc in 1992. The file <CODE>CHANGE.LOG</CODE> contains a detailed
+description of the specific changes made to the source code over its
+lifetime. The sections below present an overview of the changes I have
+made since I took over as the new maintainer.</P>
+
+<H3>Changes from 1.4.1 to 1.4.2</H3>
+
+<P>Release 1.4.2 of fplan contains an implementation of the graphical
+previewer based on the Gnome, Gtk+, Glib libraries. It also contains a
+number of bug fixes for problems reported by users. This release should
+still be considered a <EM>beta release</EM>! All users are encouraged
+to upgrade. Highlights of the bug fixes are listed below.</P>
+<P>
+<UL>
+<LI>A bug in the decode_common() function was fixed. It
+affected all plans containing waypoints with east magnetic variation,
+east longitude, or south latitude. The minutes field was not inheriting
+the arithmetic sign of the degrees field as the man page states.</LI>
+<LI>A bug related to the use of static read buffers was fixed in the
+paddb utility. It resulted in the generation of extraneous records
+that could potentially confuse the fast binary lookup algorithm
+used in fplan.</LI>
+</UL>
+</P>
+
+<H3>Changes from 1.4 to 1.4.1</H3>
+
+<P>Release 1.4.1 of fplan contains <EM>many</EM> changes since the last public
+release by Steve Tynor (version 1.3). Because of the extensive scope of my
+changes, this release should be considered a <EM>beta release</EM>!</P>
+
+<P>There were several basic goals of my changes; review the correctness of
+the navigation related algorithms and improve where possible, improve
+the documentation and examples, improve the user interface, and improve
+the portability of the source code. The order roughly reflects my
+assigned priority, from highest to lowest. Highlights of the changes
+and new features are listed below.</P>
+<P>
+<UL>
+<LI>Updated airport and navaid database files.</LI>
+<LI>New implementation of graphical previewer (based on XView Toolkit).</LI>
+<LI>New and improved waypoint types;
+<UL>
+<LI>New Intersection waypoint type (i.e., intersection of VOR radials).</LI>
+<LI>New Relative waypoint type (direction and distance from identifier).</LI>
+<LI>Lat/Lon waypoints now have a more user friendly input syntax.</LI>
+</UL>
+</LI>
+<LI>Enhanced output format (more precise lat/lon for use with GPS).</LI>
+<LI>Enhanced error checking of planfile syntax and semantics.</LI>
+<LI>More detailed documentation and examples.</LI>
+<LI>Source code is now ANSI C compatible.</LI>
+<LI>Many miscellaneous bug fixes.</LI>
+</UL>
+</P>
+
+
+<HR>
+Previous
+<A HREF="guide-2.html">Next</A>
+<A HREF="guide.html#toc1">Table of Contents</A>
+</BODY>
+</HTML>

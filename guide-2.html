@@ -1,0 +1,452 @@
+<HTML>
+<HEAD>
+<TITLE>User's Guide for fplan: Installation</TITLE>
+</HEAD>
+<BODY>
+<A HREF="guide-1.html">Previous</A>
+<A HREF="guide-3.html">Next</A>
+<A HREF="guide.html#toc2">Table of Contents</A>
+<HR>
+<H2><A NAME="s2">2. Installation</A></H2>
+
+<P>This section provides information on obtaining and installing fplan and
+the associated database files. There are binary distributions for
+Intel x86 based computers running the Linux, OS/2 and MS-DOS operating
+systems. Instructions are provided for users with other architectures
+and operating systems who will need to build fplan from source code. The
+database files are compatible with any architecture and operating system.</P>
+
+<H2><A NAME="ss2.1">2.1 Where to Get the Distribution</A></H2>
+
+<P>I was fortunate to have obtained space for a world wide web site for
+fplan from 
+<A HREF="http://metalab.unc.edu/">METALab</A> at the
+<A HREF="http://www.unc.edu/">University of North Carolina at Chapel Hill</A>.  I would like
+to extend my gracious thanks to them for donating resources to support
+this effort. All of the fplan binaries, source code, and the associated
+database files discussed below can be obtained from the fplan world wide
+web site at
+<UL>
+<LI><CODE>
+<A HREF="http://metalab.unc.edu/fplan/">http://metalab.unc.edu/fplan/</A></CODE></LI>
+</UL>
+</P>
+
+
+<H2><A NAME="linux-binary-dist"></A> <A NAME="ss2.2">2.2 The Binary Distribution for Linux</A></H2>
+
+<P>A binary distribution of fplan is available for
+<A HREF="http://www.linux.org/">Linux</A> on the Intel x86
+architecture. I don't have access to Linux on other architectures
+(like DEC Alpha, Motorola 680x0 or Power PC, Sparc). If anyone wants to
+contribute Linux binaries for these architectures please let me know
+and I will gladly make them available for everyone.</P>
+
+<P>The binary distribution for Linux on Intel x86 is available in both
+<A HREF="http://www.rpm.org/">Red Hat Package Manager</A>
+and compressed tar formats. The binary in both distributions has been
+statically linked to the XView libraries so you <EM>shouldn't</EM> need to
+download anything else to get up and running. (Red Hat distributions
+included XView at one time, but this is no longer the case).</P>
+
+<H3>Installing the Linux RPM Binary Distribution</H3>
+
+<P>For Red Hat Linux users, the
+<A HREF="http://www.rpm.org/">RPM</A> format of the
+binary distribution is the obvious choice. You will need to download
+one of the fplan-db database packages and the fplan executable package.
+The database is available in two flavors. The complete version that
+contains <EM>all</EM> airports, both public and private usage, and a
+version with only public usage airports (although they could still
+be privately owned).</P>
+
+<P>Simply download the packages, then install or upgrade by running rpm in
+upgrade mode (upgrade mode can be used for the first install too). The
+fplan-db package should be installed first, because the fplan package has
+a registered dependence on the database. Of course you need to be the
+root user to do this. If you prefer using graphical user interfaces
+to do things, use glint or xrpm to update the packages. For command
+line freaks here's an outline of the upgrade commands;</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+             # change to the directory where the packages are
+             % cd directory_where_the_packages_are
+             # install the database files first
+             % rpm -Uhv fplan-db-1998.05.07-1pub.noarch.rpm
+             # now install the fplan executables
+             % rpm -Uhv fplan-1.4.2-1.i386.rpm
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<H3>Installing the Linux Compressed Tar Distribution</H3>
+
+<P>The Linux tar distribution is available in three compression formats,
+standard Unix compress, GNU gzip, and the Burrows Wheeler based
+<A HREF="http://www.muraroa.demon.co.uk/">bzip2</A>
+(usually the best compression), so take your pick.</P>
+
+<P>You will need to download one of the databases and the executable
+distribution.  The common database is available in two flavors. The
+complete version that contains <EM>all</EM> airports, both public and private
+usage, and a version that contains only public usage airports (although
+they could still be privately owned). Remember that you will need to be
+the root user if you plan to install anything in system directories.</P>
+
+<P>If you have a preference, you can install the files from the fplan
+binary distribution anywhere you want. If the database is installed in a
+directory other than the default, you will need to set the environment
+variable that reflects where you put them. If you don't have a preference,
+you can use the default directory structure from the tar archives shown
+below. To use the default, change your working directory to <CODE>/usr</CODE>
+and extract the contents of the tar file there.
+<BLOCKQUOTE><CODE>
+<PRE>
+  /usr       # parent directory (can be /usr/local if you prefer)
+  |
+  +-- bin      # binary executables
+  |
+  +-- doc
+  |   |
+  |   +-- fplan  # html, ps, txt documentation
+  |
+  +-- man
+  |   |
+  |   +-- man1   # man pages for the executables
+  |   |
+  |   +-- man5   # man page for the database format
+  |
+  +-- share
+      |
+      +-- fplan  # common database files
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<P>The fplan binary is configured at compile time to look for the common
+database files in the directory <CODE>/usr/share/fplan</CODE>, so if you put
+them there you don't have to do anything more. Otherwise, you will need
+to set the <CODE>FPLAN_COMMON_DBDIR</CODE> environment variable to reflect where
+you put them. (The best place to do this is in the initialization file
+for your command shell, the <CODE>~/.cshrc</CODE> for C shell users,
+or the <CODE>~/.profile</CODE> for Bourne shell users).</P>
+
+
+<H2><A NAME="emx-binary-dist"></A> <A NAME="ss2.3">2.3 The Binary Distribution for OS/2 and MS-DOS</A></H2>
+
+<P>The binary distribution for
+<A HREF="http://www.software.ibm.com/os/warp">OS/2</A> and
+MS-DOS was built using the excellent GCC/EMX compiler by Eberhard
+Mattes. The binary runs stand alone under OS/2 Warp and also under
+MS-DOS with a memory extender that is compatible with the type of
+extended memory used (which depends on the version of MS-DOS or
+MS-Windows you are using). The binary distribution is packaged using
+the freely available 
+<A HREF="http://www.cdrom.com/pub/infozip/">Info Zip</A> archiving and compression utility, which is compatible
+with commercial products like PKUNZIP and WinZip.</P>
+
+<H3>Installing the OS/2 and MS-DOS Binary Distribution</H3>
+
+<P>You will need to download one of the databases and the executable
+distribution archived in Info Zip format. The common database is available
+in two flavors; the complete version that contains <EM>all</EM> airports, both
+public and private usage, and a version with only public usage airports
+(although they could still be privately owned). If you don't have a
+utility that is compatible with the distribution archives, you can get
+one for no cost from the Info Zip world wide web site at</P>
+<P>
+<UL>
+<LI><CODE>
+<A HREF="http://www.cdrom.com/pub/infozip/">http://www.cdrom.com/pub/infozip/</A></CODE></LI>
+</UL>
+</P>
+
+
+<P>You can install the files from the fplan binary distribution anywhere
+you want if you have a preference.  You will need to set the fplan
+environment variables to reflect where you put the database files. If
+you don't have a preference you can use the default directory structure
+from the Zip archives shown below. In this case, you don't need to set
+any environment variables.</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+  \fplan      # parent directory (this can be anything you want)
+  |
+  +-- bin       # binary executables
+  |
+  +-- commondb  # common database files
+  |
+  +-- doc       # html, ps, txt documentation
+  |
+  +-- plans     # work directory for planfiles (and examples too)
+  |
+  +-- userdb    # user's personal database files
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<P>The first step is to select a location in your file system for the
+fplan top level parent directory. You can call this directory anything
+you want, but the natural choice is "<CODE>fplan</CODE>". Create the top level
+directory using the mkdir command or your favorite file manager. Next,
+unpack both the database and executable archives while in the top
+level fplan directory. The Zip archives contain the sub directories
+described above, so you don't need to create them.</P>
+
+<P>The next step is to set the fplan environment variables to specify
+the directories where the database files are located. This is done in
+the <CODE>CONFIG.SYS</CODE> file for OS/2 users and the <CODE>AUTOEXEC.BAT</CODE> file
+for MS-DOS and MS-Windows users. There are two environment variables,
+one for the common databases and one for your personal databases,
+where the later is optional. If you have more than a single drive or
+partition on your system, be sure to include the drive letter in the
+path specification. If you use the default directory structure from the
+Zip archives, an example entry might look something like this
+<BLOCKQUOTE><CODE>
+<PRE>
+        REM define the common database directory
+        SET FPLAN_COMMON_DBDIR=D:\PROGS\FPLAN\COMMONDB
+        REM define user's personal database directory (optional)
+        SET FPLAN_USER_DBDIR=D:\PROGS\FPLAN\USERDB
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<H3>Where to get the Correct Memory Extender for MS-DOS</H3>
+
+<P>If you want to run fplan in a DOS environment using DOS Protected Mode
+Interface (DPMI) memory, such as a Windows DOS box, you will need the
+RSX 32 bit extender which you can obtain from
+<UL>
+<LI><CODE>
+<A HREF="ftp://ftp.uni-bielefeld.de/pub/systems/msdos/misc/">ftp://ftp.uni-bielefeld.de/pub/systems/msdos/misc/</A></CODE></LI>
+<LI><CODE>
+<A HREF="ftp://ftp.leo.org/pub/comp/os/os2/leo/gnu/emx+gcc/contrib/">ftp://ftp.leo.org/pub/comp/os/os2/leo/gnu/emx+gcc/contrib/</A></CODE></LI>
+</UL>
+</P>
+
+<P>If you want to run fplan in a DOS environment using VCPI memory,
+you can use the EMX 32 bit extender which you can obtain from
+<UL>
+<LI><CODE>
+<A HREF="ftp://hobbes.nmsu.edu/pub/os2/dev/emx/v0.9c/emxrt.zip">ftp://hobbes.nmsu.edu/pub/os2/dev/emx/v0.9c/emxrt.zip</A></CODE></LI>
+</UL>
+</P>
+
+
+<H2><A NAME="ss2.4">2.4 Building fplan from Source Code</A></H2>
+
+<P>Users with architectures and operating systems for which binaries are
+not available will need to build fplan from source code. The source
+distribution is available from the fplan download page on the world wide
+web. For users with Unix based environments, the source is available in
+<A HREF="http://www.rpm.org/">Red Hat Package Manager</A>
+and compressed tar formats. The source is also available in
+<A HREF="http://www.cdrom.com/pub/infozip/">Info Zip</A>
+format for users with non-Unix based environments. Some general software
+requirements for build fplan from source are discussed below.</P>
+
+<H3>General Requirements</H3>
+
+<P>The graphical previewer option in the original version of fplan
+required the Suntools Toolkit, available only on Unix based systems
+from Sun Microsystems. However, since the switch from SunOS to Solaris,
+Suntools is no longer being distributed by Sun. This release of fplan
+uses the very similar XView Toolkit, distributed by Sun in both binary
+<EM>and</EM> source form. This makes the fully functional fplan significantly
+more portable since XView has been ported by the user community to
+many popular Unix/X11 based environments such as, BSDI, FreeBSD,
+HP-UX, Irix, Linux, Solaris, Unixware, etc.</P>
+
+<P>Alternatively, you can build with a previewer based on the new Gtk+
+toolkit and GNOME application toolkit (look for GFX_GNOME in the
+Makefile; requires gnome-libs 0.99.3 or higher).  Once GNOME is more
+widely available (it is only in beta testing as I write this), the
+GNOME version will become the default.  At that time, we plan to add
+a graphical front end to all of fplan's features (while maintaining
+every current ability to use it in text-only mode).</P>
+
+<P>Incidentally, the GNOME front end should eventually make fplan more
+portable than the XView version allows, as the Gtk+ toolkit is portable
+to many different display systems, and in particular, has already been
+ported to the MS Windows environment.</P>
+
+<P>With the previewer disabled, fplan can be built on a wide variety of
+operating systems, including most non-Unix systems.  The specific
+requirements for building fplan are described below. If you have
+information regarding building fplan in other environments (Amiga,
+BeOS, Macintosh MPW, etc.), let me know and I'll update the information.
+Below is a list of the software development tools you will need.</P>
+<P>
+<DL>
+
+<DT><B>ANSI C Compiler</B><DD><P>I have converted the fplan source to ANSI C to take advantage of the
+better error checking that comes with function prototypes. (The original
+fplan was written in K &amp; R style C). If you don't have an ANSI C
+compiler, the Free Software Foundation's GNU C compiler is an excellent
+choice (in addition to being completely free). Note that some of the C
+library functions used are not part of the ANSI standard, so with some
+compilers you need to include a flag to enable what is often called
+<EM>extended</EM> ANSI mode (for example: <CODE>-Ae</CODE> under HP-UX). Although
+most systems still have these functions, there are implementations of
+them in the file <CODE>strings.c</CODE> just in case.</P>
+
+<DT><B>Lexical Analyzer Generator</B><DD><P>You won't actually need lex, flex, or any other lexical analyzer
+generator, <EM>unless</EM> you want to change the scanner description
+file, <CODE>fp_lex.l</CODE>. A default scanner is provided in the file
+<CODE>fp_lex.c</CODE>, which was generated with flex. If you use a scanner
+of your own, it must be lex compatible. To enable lex compatibility with
+flex, you must include the <CODE>-l</CODE> flag on the flex command line.</P>
+
+<DT><B>Parser Generator</B><DD><P>You won't need a parser generator either, <EM>unless</EM> you want to change
+the parser description file <CODE>fp_yacc.y</CODE>. A default parser is
+provided in the file <CODE>fp_yacc.c</CODE>, which was generated using
+Robert Corbett's byacc. If you use your own parser generator, it should
+be configured to write fixed output files, <CODE>y.tab.c</CODE> and <CODE>y.tab.h</CODE>
+like ATT yacc.  The correct flags for ATT yacc, byacc, and
+Bison are included in the provided <CODE>Makefile</CODE>.</P>
+
+
+<DT><B>XView Toolkit</B><DD><P>If you want to use the default implementation of the graphics previewer
+under Unix/X11, you will need Sun Microsystem's XView Toolkit. You can
+also build fplan without the previewer, in which case you don't need
+XView. The full source code for the XView Toolkit is available from
+the directory
+<UL>
+<LI><CODE>
+<A HREF="ftp://ftp.x.org/R5contrib/xview3.2/">ftp://ftp.x.org/R5contrib/xview3.2/</A></CODE></LI>
+</UL>
+
+You will probably not want to build XView from source (although you
+can do it). You are better off just installing pre-built binaries, if
+they are available for your system. Here are some locations where you
+can obtain pre-built XView binaries for several different platforms
+<UL>
+<LI>FreeBSD: <CODE>
+<A HREF="ftp://ftp.freebsd.org/pub/FreeBSD/packages-current/x11/">ftp://ftp.freebsd.org/pub/FreeBSD/packages-current/x11/</A></CODE></LI>
+<LI>HP-UX: <CODE>
+<A HREF="ftp://ftp.csc.liv.ac.uk/pub/xview3.2/">ftp://ftp.csc.liv.ac.uk/pub/xview3.2/</A></CODE></LI>
+<LI>Linux: <CODE>
+<A HREF="ftp://metalab.unc.edu/pub/Linux/X11/libs/xview/">ftp://metalab.unc.edu/pub/Linux/X11/libs/xview/</A></CODE></LI>
+<LI>Sun Solaris: ships with it already installed!</LI>
+</UL>
+
+Of the above, I can vouch only for the HP-UX binaries. They seem to work
+fine under HP-UX 10.20. I've also successfully tested fplan under Sun
+Solaris 5.2. If you have better information, drop me a note and I will
+add or make appropriate corrections to the above list.</P>
+
+<DT><B>GNOME and Gtk+ Toolkits</B><DD><P>If you want to use the optional GNOME implementation of the graphics
+previewer under Unix/X11, you will need the latest gnome-libs (0.99.3
+or higher) and the latest Gtk+ libraries. They are available from
+<UL>
+<LI><CODE>
+<A HREF="http://www.gnome.org/">http://www.gnome.org/</A></CODE></LI>
+<LI><CODE>
+<A HREF="http://www.gtk.org/">http://www.gtk.org/</A></CODE></LI>
+</UL>
+
+Once the GNOME libraries are more widely available (they came out of
+beta only just recently), the GNOME version will become the default.</P>
+
+<DT><B>Make Utility</B><DD><P>Although it's not really essential, it's very helpful to have a make
+utility. The provided <CODE>Makefile</CODE> is not very complicated. It should
+work with most Unix make utilities, as well as ports of make to non-Unix
+environments. For building under OS/2 and MS-DOS using the GCC/EMX compiler
+by Eberhard Mattes, use <CODE>Makefile.EMX</CODE>.</P>
+
+</DL>
+</P>
+
+<H3>Configuration and Compilation</H3>
+
+<P>Here is an outline of the steps required to build fplan from source;
+<OL>
+<LI> Edit the <CODE>config.h</CODE> header file to specify the directories
+where fplan will look for the common, system wide and the user's personal
+database files. The directory for the common database files must be
+consistent with where the Makefile will install them (part of the
+next step).
+</LI>
+<LI> Edit the <CODE>Makefile</CODE> to reflect your environment. You will need
+to edit various macros to specify which compiler to use, where the XView
+header and library files reside, and where things should be installed. I
+won't go into specifics here since each macro you will need to edit is
+described by comments in the <CODE>Makefile</CODE>.
+</LI>
+<LI> Run <CODE>"make"</CODE> to build the executables. If the build fails at
+some point, it is possible that your changes to the <CODE>Makefile</CODE> in
+the above step don't correctly reflect your environment.
+</LI>
+<LI> Run <CODE>"make install"</CODE> to install the executables. If you are
+installing fplan in directories like <CODE>/usr/bin</CODE> that are owned
+by root, this step (and the next two) will likely require that you log
+in as root to have the required privileges.
+</LI>
+<LI> Run <CODE>"make install-man"</CODE> to install the man pages. If you
+want to install the html format of the user's guide for browsing
+online, you will need to do that by hand.
+</LI>
+<LI> To install the database files, unpack the <CODE>airports.nav</CODE> and
+<CODE>vors.nav</CODE> files from the database distribution into the build
+directory. Then run <CODE>"make install-dbs"</CODE> to install them into the
+directory where fplan expects them.</LI>
+</OL>
+</P>
+
+<P>The user's guide (this document) is written in SGML (Standard
+Generalized Markup Language) format. SGML documents are translatable 
+into popular formats such as standard HTML as well as LaTeX (and dvi,
+postscript from there). The converted formats are up to date with 
+respect to the SGML version when the distribution was packaged (by
+running a <CODE>"make doc"</CODE>). If you make changes to the master SGML
+format documents, you will need the SGMLtools formatting system to
+update the other formats, available from
+<UL>
+<LI><CODE>
+<A HREF="http://www.sgmltools.org/">http://www.sgmltools.org/</A></CODE></LI>
+</UL>
+</P>
+
+<H3>Building from the Source RPM Package</H3>
+
+<P>For Red Hat Linux users that want to rebuild from source, the
+<A HREF="http://www.rpm.org/">RPM</A> format of the source
+distribution is the obvious choice. If you insist on using graphical
+user interfaces to do things, you're going to have to grit your teeth
+this time. Here's an outline of the commands used to rebuild and
+install the new package;
+<BLOCKQUOTE><CODE>
+<PRE>
+             # install the fplan source package
+             % rpm -Uhv /path_to_src_package/fplan-1.4.2-1.src.rpm
+             # change to the directory where spec file is located
+             % cd /usr/src/redhat/SPECS
+             # build the binary package
+             % rpm -bb fplan.spec
+             # install the binary package
+             % rpm -Uhv ../RPMS/i386/fplan-1.4.2-1.i386.rpm
+</PRE>
+</CODE></BLOCKQUOTE>
+
+Of course, you have to be the root user to do the above. Unlike the binary
+distribution, you <EM>must</EM> have the XView header files and libraries
+installed on your system to rebuild from source. If you don't already
+have them, you can likely find them from the extensive RPM database
+maintained by the 
+<A HREF="http://rufus.w3.org/linux/rpm2html/">rpm2html</A> developers at
+<UL>
+<LI><CODE>
+<A HREF="http://rufus.w3.org/linux/RPM/">http://rufus.w3.org/linux/RPM/</A></CODE>.</LI>
+</UL>
+</P>
+
+
+<HR>
+<A HREF="guide-1.html">Previous</A>
+<A HREF="guide-3.html">Next</A>
+<A HREF="guide.html#toc2">Table of Contents</A>
+</BODY>
+</HTML>

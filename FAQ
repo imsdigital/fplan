@@ -1,0 +1,97 @@
+  Frequently Asked Questions about fplan
+  John C. Peterson, <jaypee@netcom.com>
+  Release 1.4.2, 01 May 1999
+  ____________________________________________________________
+
+  Table of Contents:
+
+  1.      General Questions
+
+  1.1.    What are the software requirements for running fplan?
+
+  2.      Database Problems
+
+  2.1.    Where can I get a free database with coverage outside the USA?
+
+  2.2.    Why isn't airport or navaid XYZ in your stupid database?
+
+  2.3.    I get an error message saying fplan can't find the databases?
+  ______________________________________________________________________
+
+  1.  General Questions
+
+  1.1.  What are the software requirements for running fplan?
+
+  fplan was developed primarily for use on systems running the UNIX
+  Operating System and the X11 Window System (with particular emphasis
+  on Linux). If you build from source code on a UNIX system, you will
+  need either the XView Toolkit, or the Gnome, Gtk+, Glib libraries. On
+  OS/2 and MS-DOS systems, the code can be built with the graphical
+  previewer disabled. Once the beta testing phase is complete, OS/2 and
+  MS-DOS binaries will be made available.
+
+  2.  Database Problems
+
+  2.1.  Where can I get a free database with coverage outside the USA?
+
+  To my knowledge, there is no reliable source for airport and navaid
+  information for regions outside the United States that is in the
+  public domain. For now, your only option is to construct a small
+  database of your own using information from other sources. See the
+  user's guide for information on how to construct your own database
+  files.
+
+  At this time, it appears that the only viable long term solution is to
+  purchase data from a commercial vendor in ARINC 424-13 format (a
+  published standard for the exchange of navigation data) and convert it
+  into a format compatible with fplan.  Each end user would have to
+  purchase the desired data since the licensing generally prohibits
+  further distribution.  In theory, software could be written to do the
+  required conversion. However, this is not a simple task since the
+  ARINC 424-13 format is quite complex. Send me a note if you are
+  interested in this.
+
+  It's worth repeating here that the freely distributable database for
+  the USA should not be considered accurate and up to date. The web site
+  that distributes the NFDC data clearly states; "FOR RESEARCH PURPOSES
+  ONLY -- NOT CERTIFIED FOR NAVIGATION". Users of the freely
+  distributable database files are encouraged to validate information
+  they use by comparing with reliable sources.
+
+  2.2.  Why isn't airport or navaid XYZ in your stupid database?
+
+  It's possible that you are using the wrong identifier. Don't forget
+  that the fplan airport database uses the "K" convention. You've
+  probably heard of it if you own a GPS receiver. It's basically a
+  mechanism designed to deal with the fact that there are airports and
+  navaids out there with the same identifier. For an airport with an
+  identifier that is 3 alphabetic characters long, simply prefix it with
+  the "K" character. (Do this regardless of whether there is a
+  navigational aid with the same identifier or not). If it contains
+  numeric characters, or is not exactly 3 characters long, don't prefix
+  it with the "K" character. For example, HMT becomes KHMT, L78 remains
+  L78, and CL35 remains CL35. Remember that you can use the lookup mode
+  to get a summary of information in the database for any given
+  identifier (using the -l option).
+
+  The freely database for the USA is available in two flavors. The
+  complete version that contains all airports, both public and private
+  usage, and a version with only public usage airports (although they
+  could still be privately owned). If you downloaded the smaller public
+  database, it's possible the airport in question is for private usage
+  only.
+
+  2.3.  I get an error message saying fplan can't find the databases?
+
+  Most likely, it's because you installed the database files somewhere
+  other than where fplan is looking for them. The default directory
+  under UNIX is /usr/share/fplan. If you built fplan from source,
+  examine config.h and Makefile to determine the value of the macro
+  DEFAULT_COMMON_DBDIR. Compare this with where you installed the
+  database files. Also, verify that the database files have read
+  permission. Another solution is to set the FPLAN_COMMON_DBDIR
+  environment variable to reflect where you actually put the files. The
+  best place to do this is in the initialization file for your command
+  shell, the ~/.cshrc for C shell users, or the ~/.profile for Bourne
+  shell users.
+

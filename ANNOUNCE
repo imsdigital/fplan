@@ -1,0 +1,67 @@
+
+ANNOUNCEMENT
+============
+
+I am pleased to announce release 1.4.2 of fplan, a freely distributable
+program for general aviation flight planning. Release 1.4.2 of fplan
+contains a number of bug fixes for problems reported by users. It also
+has an implementation of the graphical previewer based on the Gnome,
+Gtk+, Glib libraries.  This release should still be considered a BETA
+release! All current users are encouraged to upgrade.
+
+
+WHAT IS IT?
+==== == ===
+
+The fplan application is designed to assist general aviation pilots in
+creating flight plans for cross country flights in powered aircraft.
+It was developed primarily for use on systems running the UNIX Operating
+System and the X11 Window System, with particular emphasis on Linux.
+
+The input to fplan is a planfile that can be created with the user's
+favorite plain text editor. A self explanatory language is used to
+describe the flight; departure and destination airports, intermediate
+waypoints, navigation aids, winds aloft, and fuel consumption rates.
+The flight plan produced by fplan includes; wind corrected magnetic
+headings, distance, estimated time and fuel consumption for each leg,
+latitude and longitude for each checkpoint, and optional VOR fixes.
+A graphical preview of the flight is available on systems with X11
+Windows and the XView Toolkit.
+
+For convenience, airports or navaids can be referenced by their ICAO
+identifier in planfiles.  The information that fplan requires is stored in
+database files, indexed by identifier.  For users in the United States,
+freely distributable database files are available that were derived
+from information from the National Flight Data Center.  This data is
+not certified for navigation, and should be verified before actual use.
+
+
+AVAILABILITY
+============
+
+The latest release can be obtained from the fplan web site at
+
+	http://metalab.unc.edu/fplan/
+
+
+MAILING LIST INFORMATION
+======= ==== ===========
+
+fplan is now officially a GNOME application. As a result, the GNOME
+project hosts a mailing list for interested developers, users.  The list
+is intended to provide a forum for the discussion of fplan development
+tasks and design issues. The list is open to all who would like to
+participate in fplan development, contribute ideas or suggestions, or
+simply lurk to keep track of where things are going.  To join the list,
+send a mail message with the subject "subscribe" and an empty body to
+
+  o  <fplan-list-request@gnome.org>
+
+
+CONTACT INFO
+======= ====
+
+John C. Peterson  FAA PP/ASEL,G
+
+<mailto:jaypee@netcom.com>
+

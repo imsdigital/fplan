@@ -1,0 +1,199 @@
+
+$Id: TODO,v 1.4 1999/05/02 05:04:20 jcp Exp $
+
+================================================================================
+
+This "TODO" document is intended to remind ourselves of some of the wild
+ideas we have dreamed up, and also to encourage others to contribute ideas
+for the improvement of fplan.
+
+Thanks to efforts by Michael Johnson, fplan is now officially part of the
+Gnome Project. As a result, the fplan project now has a CVS repository
+to facilitate development by multiple programmers as well as a mailing
+list. The list is intended to provide a forum for the discussion of fplan
+development tasks and design issues. The list is open to all who would
+like to participate in fplan development, contribute ideas or suggestions,
+or simply lurk to keep track of where things are going. To join the list,
+send a mail message with the subject "subscribe" and an empty body to
+
+     * <fplan-list-request@gnome.org>
+
+
+If you want to get involved, get on the mailing list and let us know
+what you are working on so that we don't all work on the same thing at
+the same time! This document is divided into several sections;
+
+  o Design Overview Ideas
+
+  o General TODO Items
+
+  o Interactive Pre-Flight Mode DESIGN
+
+  o Interactive Pre-Flight Mode TODO
+
+  o Interactive In-Flight Mode DESIGN
+
+  o Interactive In-Flight Mode TODO
+
+================================================================================
+
+DESIGN OVERVIEW IDEAS
+====== ======== =====
+
+After doing some thinking about what the ultimate open source flight
+planner might be like, I settled on the idea that there are really
+two distinct GUI versions of interest. (jcp) Here's the total
+picture:
+
+1) No Graphics Mode. Here we assume that no graphics are available, the
+   inputs are through command line options and an existing planfile.
+   Targeted at batch operation for Linux Console, or environments such
+   as OS/2 and MS-DOS where the GUI Toolkits are unavailable.
+
+2) Interactive Pre-Flight Mode. Here we assume that we are operating in
+   a true pre-flight context, (as opposed to being in flight). Targeted
+   at desktop or laptop systems, where a good display and pointing device
+   are both available and easy to use. A GUI Toolkit (Gnome was chosen)
+   is used to provide point and click access to all planning functions.
+   See the section below dedicated to "Interactive Pre-Flight Mode Design".
+
+3) Interactive In-Flight Mode. Here we assume that we are operating in
+   an in-flight context, we are actually flying the flight. We want
+   to support dedicated or embedded hardware with limited resources
+   (limited memory and possibly no MMU, displays with only 1 bit plane
+   (e.g. LCDs), no keyboard). One such class of systems are handhelds
+   based on PC/104 modules.  Another example would be the Motorola
+   Dragonball(EZ) based devices such as the 3Com Palm Pilot with TRG
+   Memory board or the uCsimm device (these run the uClinux port).
+
+
+================================================================================
+
+GENERAL TODO ITEMS
+======= ==== =====
+
+ o A set of scripts that automagically fetches weather observations,
+   satellite and radar images, and forecast for the planned route.
+   I've recently discovered several very interesting tools developed
+   specifically for extracting information from web pages; WebL,
+   NoDose, and Webpluck to be specific.
+
+ o Support for metric units. Altitude in meters, distances in
+   kilometers, and speeds in kilometers / hour. (What are the commonly
+   used abbreviations for this? I would guess they are "m", "km", and
+   "kph" respectively).
+
+ o Weight and balance, and other E6B "like" calculations.
+
+ o Need to formulate a general model for aircraft performance. We
+   need climb and cruise performance as a function of power, throttle
+   settings. Simple interpolation of the tables from the POH might be
+   one approach.
+
+ o Implement "include files". The idea is that you could replace a
+   long sequence of fuel capacity and related performance statements
+   with a command like "include C-182RG", or something like that.
+
+ o Variant of the VIA waypoint designed for climb and descent planning.
+
+ o Command to configure how the distance from a waypoint to a navaid
+   is calculated. The choices would be over ground distance (for use
+   with GPS), or slant range (for use with DME).
+
+ o Configurable, template-based Postscript output of flight plans. (mkj)
+
+ o The preview code needs to be modified to handle the "international
+   dateline" problem. My solution for this involves another "display"
+   coordinate system that ranges from either [-180,+180] or [0,360]
+   depending on the span of latitudes in the flight plan. (jcp)
+
+ o Implement the Mercator projection in the preview code to get a
+   real chart that meets minimal tests of cartography (I've already
+   worked out all the math for this). (jcp)
+
+
+================================================================================
+
+Interactive Pre-Flight Mode DESIGN
+=========== ========== ==== ======
+
+The development of an Interactive Pre-Flight GUI front end (GNOME
+based) for fplan will likely be a significant effort. To keep things on
+track, here is a place we can record our ideas about what we envision
+the general design to be like:
+
+  o Main Window. This would show a tabular listing of the current flight
+    plan. The table would have configurable entries such as; Identifier,
+    Name, Latitude, Longitude, Altitude, True Course, Magnetic Course, etc.
+    Access to the following sub menus is also provided;
+
+    + Display Window. Essentially the current preview window. Shows a
+      preview of the flight route on a chart (using an appropriate
+      cartographic projection).
+
+    + Environmentals Window. This window is used to enter atmospherics
+      data such as temperature, pressure altitude at the departure
+      airport. Calculated density altitude is displayed.
+
+    + Weight and Balance Window.
+
+    + Weather Data Window.
+
+    + Probably others...
+
+
+================================================================================
+
+Interactive Pre-Flight Mode TODO
+=========== ========== ==== ====
+
+Here is a place where we can record specific tasks associated with
+preparation for, or actual implementation of the Interactive Pre-Flight
+GUI front end.
+
+ o Implement a "context" structure that contains all of the current
+   data structures required to describe a flight plan. We want the
+   GUI to have the ability to have multiple flight plans open at the
+   same time, as well as the ability to switch back and forth. A
+   global pointer would be used to refer to the currently active
+   flight plan, i.e. current->waypoints, etc.
+
+ o The ability to *insert* a new waypoint into an existing list
+   will be needed in the GUI. Michael has suggested converting the
+   existing waypoints array into a GList structure (which are just
+   doubly linked lists). Support functions such as g_list_append(),
+   g_list_foreach(), etc. should facilitate most of the requirements.
+
+ o Change all statically dimensioned arrays to dynamic allocation.
+
+ o The error messaging needs to be redesigned to be compatible with
+   graphical display. A function which can "collect" error messages
+   until it's told to display or print all of them should do the trick.
+
+
+================================================================================
+
+Interactive In-Flight Mode DESIGN
+=========== ========= ==== ======
+
+The development of an Interactive In-Flight GUI front end is currently
+very much in its infancy. However, I wanted to make sure that this type
+of interface could be easily added in the future.
+
+ o There are several freely distributable codes that will read and decode
+   NMEA position data from a GPS connected to the serial port. Any
+   recommendations on which code is best?
+
+ o I guess GNOME will have (has?) support for simple frame buffer video?
+   What about memory foot prints? We may not have much to work with.
+
+ o Next logical step is to design the window layouts and functions.
+
+
+================================================================================
+
+Interactive In-Flight Mode TODO
+=========== ========= ==== ====
+
+Lots to do!
+

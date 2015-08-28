@@ -1,0 +1,147 @@
+#!fplan -w
+#
+# $Id: EXAMPLE3.fpl,v 1.1 1998/11/28 06:06:53 jcp Exp $
+#
+# -----------------------------------------------------------------------------
+#
+# Example No. 3
+#
+# This is a more complex example that uses a wider variety of waypoint
+# types to specify the flight route. It also demonstrates climb and
+# descent planning, as well as more precise fuel management.
+#
+# -----------------------------------------------------------------------------
+#
+# Use one the following forms of the fplan command. Either configure your
+# file manager, or just enter it into your favorite command shell. The first
+# form generates the default narrow format output (without VOR fixes). The
+# second form generates wide output, with VOR fixes, and requires a terminal
+# screen 98 characters wide. The third enables the autotrack feature, and
+# the fourth displays a graphic preview of the route(s).
+#
+# fplan EXAMPLE3.fpl		# default narrow output (80 chars wide)
+#
+# fplan -w EXAMPLE3.fpl		# wide output with VOR fixes (98 char wide)
+#
+# fplan -w -t EXAMPLE3.fpl	# wide output, with autotrack enabled
+#
+# fplan -g EXAMPLE3.fpl		# graphical preview of flight (requires XView)
+#
+# -----------------------------------------------------------------------------
+#
+# The enclosed comments are all optional, I've included them solely for
+# their instructional value. However, they are very useful for keeping
+# everything organized as you had intended. As you can see, comments
+# can start at the beginning, or in the middle of a line.
+#
+# -----------------------------------------------------------------------------
+
+wind 290 @ 12.0;	# winds aloft from FSS; degrees true @ speed in knots
+
+nav 1 JLI;		# start the flight with NAV 1 tuned to JLI
+
+nav 2 MZB;		#                       NAV 2 tuned to MZB
+
+# -----------------------------------------------------------------------------
+
+from KSEE 360 / 0.66;	# This example cross country starts at a point
+			# abeam midfield on the right downwind leg after
+			# an assumed departure from runway 27R. To find the
+			# direction, I take off on a heading of about 270
+			# magnetic, and I will turn right, so the intended
+			# point is 270 + 90 = 360 degrees (0 will work
+			# just as well since it's the same direction). I
+			# estimated the distance based on inspection of an
+			# airport diagram, and came up with about 4000 ft,
+			# or in nmi it would be 4000/6080, roughly 0.66
+
+comment "Right Downwind 27R";
+
+fuel_amount 40.0;	# The usable fuel in gallons for the Cessna 172N
+			# with standard tanks. This statement could have
+			# appeared before the first departure waypoint
+			# since this example contains only one route.
+
+fuel_used 1.1;		# estimated fuel usage for engine start, taxi, take-off
+
+fuel_rate 11.4;		# estimated fuel burn rate for climb power setting
+
+tas 80.0 kts;		# estimated true airspeed for climb power setting
+
+
+# -----------------------------------------------------------------------------
+
+via  32:52:45 north	# I need this waypoint to avoid	punching into
+    116:55:35 west	# sector H of the San Diego TCA which goes from
+        12.65 east;	# 1,800 to 12,500 MSL just to the west of here.
+			# This could also be entered into a personal
+			# database if it's used frequently.
+
+comment "Avoid sector H to the NW";
+
+# -----------------------------------------------------------------------------
+
+via 2.0;		# we reach our maximum allowable altitude while
+			# under the floor at 3800 of sector H of the San
+alt 3500;		# Diego TCA (er, class B airspace).
+
+fuel_rate 8.0;		# estimated fuel burn rate for 71% BHP, 2500 RPM
+
+tas 115.0;		# estimated true airspeed for 71% BHP, 2500 RPM
+
+comment "2500 RPM, maintain 3500";
+
+# -----------------------------------------------------------------------------
+
+via L39 240 / 1.5;	# This will keep us away from high terrain to
+			# the west, but close to an alternate airport.
+
+alt 4500;		# it's now safe to climb to 4500 MSL without
+			# punching into the TCA (er, class B airspace)
+
+nav 1 OCN;		# tune NAV 1 to OCN for this leg
+
+comment "Begin climb to 4500 @ PD"; 	# PD = pilot's descretion
+
+# -----------------------------------------------------------------------------
+
+via -18.0;		# 18 DME from next waypoint, Oceanside VOR/DME
+			# it's now safe to climb to desired cruise altitude
+
+comment "Begin climb to 6500 @ PD"; 
+
+# -----------------------------------------------------------------------------
+
+via OCN;
+
+alt 6500;		# desired cruise altitude
+
+fuel_rate 7.6;		# estimated fuel burn rate for 67% BHP, 2500 RPM
+
+tas 115.0;		# estimated true airspeed for 67% BHP, 2500 RPM
+
+nav 2 SXC;		# tune NAV 2 to SXC for this leg
+
+comment "SoCal APC/DEP 127.3";
+
+# -----------------------------------------------------------------------------
+
+via -15.0;		# begin a 500 FPM descent 15 nautical miles out
+
+tas 120.0 knots;	# Estimated true airspeed based on 500 FPM descent.
+			# Note that the units used for speeds and distances
+			# can be specified if desired. (The default is
+			# knots and nautical miles respectively).
+
+comment "Begin 500 FPM descent";
+
+# -----------------------------------------------------------------------------
+
+to KAVX;		# Plan on an over flight of the airport to check
+			# the wind sock and get in sequence for approach
+
+fuel_used 0.5;		# estimated fuel usage for taxi back, shut down
+
+comment "R-TFC 22, TPA 2602 MSL";
+
+# end of planfile

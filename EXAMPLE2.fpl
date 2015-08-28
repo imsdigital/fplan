@@ -1,0 +1,133 @@
+#!fplan -w
+#
+# $Id: EXAMPLE2.fpl,v 1.1 1998/11/28 06:06:53 jcp Exp $
+#
+# -----------------------------------------------------------------------------
+#
+# Example No. 2
+#
+# This example demonstrates the multiple route feature. When we are doing
+# our preflight planning, we often aren't certain of the route we want to
+# take until the day we fly. Weather might make a normally undesirable
+# route the only safe choice, or we may need to land at another airport
+# to pick up or drop off a passenger, etc.
+#
+# -----------------------------------------------------------------------------
+#
+# Use one the following forms of the fplan command. Either configure your
+# file manager, or just enter it into your favorite command shell. The first
+# form generates the default narrow format output (without VOR fixes). The
+# second form generates wide output, with VOR fixes, and requires a terminal
+# screen 98 characters wide. The third enables the autotrack feature, and
+# the fourth displays a graphic preview of the route(s).
+#
+# fplan EXAMPLE2.fpl		# default narrow output (80 chars wide)
+#
+# fplan -w EXAMPLE2.fpl		# wide output with VOR fixes (98 char wide)
+#
+# fplan -w -t EXAMPLE2.fpl	# wide output, with autotrack enabled
+#
+# fplan -g EXAMPLE2.fpl		# graphical preview of flight (requires XView)
+#
+# -----------------------------------------------------------------------------
+#
+# The enclosed comments are all optional, I've included them solely for
+# their instructional value. However, they are very useful for keeping
+# everything organized as you had intended. As you can see, comments
+# can start at the beginning, or in the middle of a line.
+#
+# -----------------------------------------------------------------------------
+
+wind 310 @ 15 kts;	# winds aloft forecast for 6,000 FT MSL
+
+# -----------------------------------------------------------------------------
+# route 1, KRPD -> KOSH
+# -----------------------------------------------------------------------------
+
+from KRPD;
+
+fuel_amount 40.0;	# usable fuel for Cessna 172N (std tanks) (gallons)
+
+fuel_used 1.1;          # estimated fuel usage for engine start, taxi, take-off
+
+fuel_rate 7.6;		# estimated fuel burn rate for 67% BHP, 2500 RPM
+
+tas 115.0;		# estimated true airspeed for 67% BHP, 2500 RPM
+
+# -----------------------------------------------------------------------------
+
+via EAU;
+
+comment "AWOS-3 119.675";
+
+# -----------------------------------------------------------------------------
+
+via MFI;
+
+comment "AWOS-3 126.425";
+
+# -----------------------------------------------------------------------------
+
+via STE;
+
+comment "AWOS-3 119.275";
+
+# -----------------------------------------------------------------------------
+
+to KOSH;
+
+# -----------------------------------------------------------------------------
+# route 2, to our first stop (to pickup a passenger)
+# -----------------------------------------------------------------------------
+
+from KRPD;
+
+fuel_amount 40.0;	# usable fuel for Cessna 172N (std tanks) (gallons)
+
+fuel_used 1.1;          # estimated fuel usage for engine start, taxi, take-off
+
+fuel_rate 7.6;		# estimated fuel burn rate for 67% BHP, 2500 RPM
+
+tas 115.0;		# estimated true airspeed for 67% BHP, 2500 RPM
+
+# -----------------------------------------------------------------------------
+
+via RNH;
+
+# -----------------------------------------------------------------------------
+
+to 21D;
+
+# -----------------------------------------------------------------------------
+# route 2, continue to final destination
+# -----------------------------------------------------------------------------
+
+from 21D;
+
+# -----------------------------------------------------------------------------
+
+via W11;
+
+# -----------------------------------------------------------------------------
+
+via EAU;
+
+comment "AWOS-3 119.675";
+
+# -----------------------------------------------------------------------------
+
+via MFI;
+
+comment "AWOS-3 126.425";
+
+# -----------------------------------------------------------------------------
+
+via STE;
+
+comment "AWOS-3 119.275";
+
+# -----------------------------------------------------------------------------
+
+to KOSH;
+
+# end of planfile

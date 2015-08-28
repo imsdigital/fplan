@@ -1,0 +1,1342 @@
+  User's Guide for fplan
+  John C. Peterson, <jaypee@netcom.com>
+  Release 1.4.2, 01 May 1999
+
+  This is the user's guide for fplan, a freely distributable application
+  designed to assist general aviation pilots in creating flight plans
+  for cross country flights in powered aircraft. This document contains
+  information on the installation of the software, the creation of plan-
+  files that describe the proposed flight, and the interpretation of
+  fplan output.
+
+  1.  Introduction
+
+  1.1.  About fplan
+
+  The fplan application is designed to assist general aviation pilots in
+  creating flight plans for cross country flights in powered aircraft.
+  It was developed primarily for use on systems running the UNIX
+  Operating System and the X11 Window System, with particular emphasis
+  on Linux.
+
+  The input to fplan is a planfile that can be created with the user's
+  favorite plain text editor. A self explanatory language is used to
+  describe the flight; departure and destination airports, intermediate
+  waypoints, navigation aids, winds aloft, and fuel consumption rates.
+  The flight plan produced by fplan includes; wind corrected magnetic
+  headings, distance, estimated time and fuel consumption for each leg,
+  latitude and longitude for each checkpoint, and optional VOR fixes.  A
+  graphical preview of the flight is available on systems with X11
+  Windows and the XView Toolkit.
+
+  For convenience, airports or navaids can be referenced by their ICAO
+  identifier in planfiles.  The information that fplan requires is
+  stored in database files, indexed by identifier.  For users in the
+  United States, freely distributable database files are available that
+  were derived from information from the National Flight Data Center.
+  This data is not certified for navigation, and should be verified
+  before actual use. It is unfortunate, but there is no known public
+  domain source for similar information for areas outside the United
+  States. (See the FAQ for more information).
+
+  1.2.  Copyright
+
+  This release of fplan is Copyright (c) 1998,1999 John C. Peterson,
+  <jaypee@netcom.com>.
+
+  This software package is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License, version
+  2. A copy is included in this distribution in the file named LICENSE.
+
+  This software package is distributed in the hope that it will be
+  useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License, version 2 for more details.
+
+  I am making this stuff available in the hope that it will be useful to
+  other pilots, but you are the final judge of its accuracy,
+  applicability, suitability, etc. Pilots in the United States should be
+  sure they understand the nature of their responsibilities in the area
+  of preflight planning. See sections 3, 103, and 151 of part 91 of the
+  FARs for a quick refresher.
+
+  1.3.  Change History
+
+  The original author of fplan is Steve Tynor. His last public release
+  was version 1.3, which was posted to volume 30 of the USENET
+  newsgroup, comp.sources.misc in 1992. The file CHANGE.LOG contains a
+  detailed description of the specific changes made to the source code
+  over its lifetime. The sections below present an overview of the
+  changes I have made since I took over as the new maintainer.
+
+  1.3.1.  Changes from 1.4.1 to 1.4.2
+
+  Release 1.4.2 of fplan contains an implementation of the graphical
+  previewer based on the Gnome, Gtk+, Glib libraries. It also contains a
+  number of bug fixes for problems reported by users. This release
+  should still be considered a beta release! All users are encouraged to
+  upgrade. Highlights of the bug fixes are listed below.
+
+  o  A bug in the decode_common() function was fixed. It affected all
+     plans containing waypoints with east magnetic variation, east
+     longitude, or south latitude. The minutes field was not inheriting
+     the arithmetic sign of the degrees field as the man page states.
+
+  o  A bug related to the use of static read buffers was fixed in the
+     paddb utility. It resulted in the generation of extraneous records
+     that could potentially confuse the fast binary lookup algorithm
+     used in fplan.
+
+  1.3.2.  Changes from 1.4 to 1.4.1
+
+  Release 1.4.1 of fplan contains many changes since the last public
+  release by Steve Tynor (version 1.3). Because of the extensive scope
+  of my changes, this release should be considered a beta release!
+
+  There were several basic goals of my changes; review the correctness
+  of the navigation related algorithms and improve where possible,
+  improve the documentation and examples, improve the user interface,
+  and improve the portability of the source code. The order roughly
+  reflects my assigned priority, from highest to lowest. Highlights of
+  the changes and new features are listed below.
+
+  o  Updated airport and navaid database files.
+
+  o  New implementation of graphical previewer (based on XView Toolkit).
+
+  o  New and improved waypoint types;
+
+  o  New Intersection waypoint type (i.e., intersection of VOR radials).
+
+  o  New Relative waypoint type (direction and distance from
+     identifier).
+
+  o  Lat/Lon waypoints now have a more user friendly input syntax.
+
+  o  Enhanced output format (more precise lat/lon for use with GPS).
+
+  o  Enhanced error checking of planfile syntax and semantics.
+
+  o  More detailed documentation and examples.
+
+  o  Source code is now ANSI C compatible.
+
+  o  Many miscellaneous bug fixes.
+
+  2.  Installation
+
+  This section provides information on obtaining and installing fplan
+  and the associated database files. There are binary distributions for
+  Intel x86 based computers running the Linux, OS/2 and MS-DOS operating
+  systems. Instructions are provided for users with other architectures
+  and operating systems who will need to build fplan from source code.
+  The database files are compatible with any architecture and operating
+  system.
+
+  2.1.  Where to Get the Distribution
+
+  I was fortunate to have obtained space for a world wide web site for
+  fplan from METALab at the University of North Carolina at Chapel Hill.
+  I would like to extend my gracious thanks to them for donating
+  resources to support this effort. All of the fplan binaries, source
+  code, and the associated database files discussed below can be
+  obtained from the fplan world wide web site at
+
+  o   <http://metalab.unc.edu/fplan/>
+
+  2.2.  The Binary Distribution for Linux
+
+  A binary distribution of fplan is available for Linux on the Intel x86
+  architecture. I don't have access to Linux on other architectures
+  (like DEC Alpha, Motorola 680x0 or Power PC, Sparc). If anyone wants
+  to contribute Linux binaries for these architectures please let me
+  know and I will gladly make them available for everyone.
+
+  The binary distribution for Linux on Intel x86 is available in both
+  Red Hat Package Manager and compressed tar formats. The binary in both
+  distributions has been statically linked to the XView libraries so you
+  shouldn't need to download anything else to get up and running. (Red
+  Hat distributions included XView at one time, but this is no longer
+  the case).
+
+  2.2.1.  Installing the Linux RPM Binary Distribution
+
+  For Red Hat Linux users, the RPM format of the binary distribution is
+  the obvious choice. You will need to download one of the fplan-db
+  database packages and the fplan executable package.  The database is
+  available in two flavors. The complete version that contains all
+  airports, both public and private usage, and a version with only
+  public usage airports (although they could still be privately owned).
+
+  Simply download the packages, then install or upgrade by running rpm
+  in upgrade mode (upgrade mode can be used for the first install too).
+  The fplan-db package should be installed first, because the fplan
+  package has a registered dependence on the database. Of course you
+  need to be the root user to do this. If you prefer using graphical
+  user interfaces to do things, use glint or xrpm to update the
+  packages. For command line freaks here's an outline of the upgrade
+  commands;
+
+                    # change to the directory where the packages are
+                    % cd directory_where_the_packages_are
+                    # install the database files first
+                    % rpm -Uhv fplan-db-1998.05.07-1pub.noarch.rpm
+                    # now install the fplan executables
+                    % rpm -Uhv fplan-1.4.2-1.i386.rpm
+
+  2.2.2.  Installing the Linux Compressed Tar Distribution
+
+  The Linux tar distribution is available in three compression formats,
+  standard Unix compress, GNU gzip, and the Burrows Wheeler based bzip2
+  (usually the best compression), so take your pick.
+
+  You will need to download one of the databases and the executable
+  distribution.  The common database is available in two flavors. The
+  complete version that contains all airports, both public and private
+  usage, and a version that contains only public usage airports
+  (although they could still be privately owned). Remember that you will
+  need to be the root user if you plan to install anything in system
+  directories.
+
+  If you have a preference, you can install the files from the fplan
+  binary distribution anywhere you want. If the database is installed in
+  a directory other than the default, you will need to set the
+  environment variable that reflects where you put them. If you don't
+  have a preference, you can use the default directory structure from
+  the tar archives shown below. To use the default, change your working
+  directory to /usr and extract the contents of the tar file there.
+
+         /usr       # parent directory (can be /usr/local if you prefer)
+         |
+         +-- bin      # binary executables
+         |
+         +-- doc
+         |   |
+         |   +-- fplan  # html, ps, txt documentation
+         |
+         +-- man
+         |   |
+         |   +-- man1   # man pages for the executables
+         |   |
+         |   +-- man5   # man page for the database format
+         |
+         +-- share
+             |
+             +-- fplan  # common database files
+
+  The fplan binary is configured at compile time to look for the common
+  database files in the directory /usr/share/fplan, so if you put them
+  there you don't have to do anything more. Otherwise, you will need to
+  set the FPLAN_COMMON_DBDIR environment variable to reflect where you
+  put them. (The best place to do this is in the initialization file for
+  your command shell, the ~/.cshrc for C shell users, or the ~/.profile
+  for Bourne shell users).
+
+  2.3.  The Binary Distribution for OS/2 and MS-DOS
+
+  The binary distribution for OS/2 and MS-DOS was built using the
+  excellent GCC/EMX compiler by Eberhard Mattes. The binary runs stand
+  alone under OS/2 Warp and also under MS-DOS with a memory extender
+  that is compatible with the type of extended memory used (which
+  depends on the version of MS-DOS or MS-Windows you are using). The
+  binary distribution is packaged using the freely available Info Zip
+  archiving and compression utility, which is compatible with commercial
+  products like PKUNZIP and WinZip.
+
+  2.3.1.  Installing the OS/2 and MS-DOS Binary Distribution
+
+  You will need to download one of the databases and the executable
+  distribution archived in Info Zip format. The common database is
+  available in two flavors; the complete version that contains all
+  airports, both public and private usage, and a version with only
+  public usage airports (although they could still be privately owned).
+  If you don't have a utility that is compatible with the distribution
+  archives, you can get one for no cost from the Info Zip world wide web
+  site at
+
+  o   <http://www.cdrom.com/pub/infozip/>
+
+  You can install the files from the fplan binary distribution anywhere
+  you want if you have a preference.  You will need to set the fplan
+  environment variables to reflect where you put the database files. If
+  you don't have a preference you can use the default directory
+  structure from the Zip archives shown below. In this case, you don't
+  need to set any environment variables.
+
+         \fplan      # parent directory (this can be anything you want)
+         |
+         +-- bin       # binary executables
+         |
+         +-- commondb  # common database files
+         |
+         +-- doc       # html, ps, txt documentation
+         |
+         +-- plans     # work directory for planfiles (and examples too)
+         |
+         +-- userdb    # user's personal database files
+
+  The first step is to select a location in your file system for the
+  fplan top level parent directory. You can call this directory anything
+  you want, but the natural choice is "fplan". Create the top level
+  directory using the mkdir command or your favorite file manager. Next,
+  unpack both the database and executable archives while in the top
+  level fplan directory. The Zip archives contain the sub directories
+  described above, so you don't need to create them.
+
+  The next step is to set the fplan environment variables to specify the
+  directories where the database files are located. This is done in the
+  CONFIG.SYS file for OS/2 users and the AUTOEXEC.BAT file for MS-DOS
+  and MS-Windows users. There are two environment variables, one for the
+  common databases and one for your personal databases, where the later
+  is optional. If you have more than a single drive or partition on your
+  system, be sure to include the drive letter in the path specification.
+  If you use the default directory structure from the Zip archives, an
+  example entry might look something like this
+
+               REM define the common database directory
+               SET FPLAN_COMMON_DBDIR=D:\PROGS\FPLAN\COMMONDB
+               REM define user's personal database directory (optional)
+               SET FPLAN_USER_DBDIR=D:\PROGS\FPLAN\USERDB
+
+  2.3.2.  Where to get the Correct Memory Extender for MS-DOS
+
+  If you want to run fplan in a DOS environment using DOS Protected Mode
+  Interface (DPMI) memory, such as a Windows DOS box, you will need the
+  RSX 32 bit extender which you can obtain from
+
+  o   <ftp://ftp.uni-bielefeld.de/pub/systems/msdos/misc/>
+
+  o   <ftp://ftp.leo.org/pub/comp/os/os2/leo/gnu/emx+gcc/contrib/>
+
+  If you want to run fplan in a DOS environment using VCPI memory, you
+  can use the EMX 32 bit extender which you can obtain from
+
+  o   <ftp://hobbes.nmsu.edu/pub/os2/dev/emx/v0.9c/emxrt.zip>
+
+  2.4.  Building fplan from Source Code
+
+  Users with architectures and operating systems for which binaries are
+  not available will need to build fplan from source code. The source
+  distribution is available from the fplan download page on the world
+  wide web. For users with Unix based environments, the source is
+  available in Red Hat Package Manager and compressed tar formats. The
+  source is also available in Info Zip format for users with non-Unix
+  based environments. Some general software requirements for build fplan
+  from source are discussed below.
+
+  2.4.1.  General Requirements
+
+  The graphical previewer option in the original version of fplan
+  required the Suntools Toolkit, available only on Unix based systems
+  from Sun Microsystems. However, since the switch from SunOS to
+  Solaris, Suntools is no longer being distributed by Sun. This release
+  of fplan uses the very similar XView Toolkit, distributed by Sun in
+  both binary and source form. This makes the fully functional fplan
+  significantly more portable since XView has been ported by the user
+  community to many popular Unix/X11 based environments such as, BSDI,
+  FreeBSD, HP-UX, Irix, Linux, Solaris, Unixware, etc.
+
+  Alternatively, you can build with a previewer based on the new Gtk+
+  toolkit and GNOME application toolkit (look for GFX_GNOME in the
+  Makefile; requires gnome-libs 0.99.3 or higher).  Once GNOME is more
+  widely available (it is only in beta testing as I write this), the
+  GNOME version will become the default.  At that time, we plan to add a
+  graphical front end to all of fplan's features (while maintaining
+  every current ability to use it in text-only mode).
+
+  Incidentally, the GNOME front end should eventually make fplan more
+  portable than the XView version allows, as the Gtk+ toolkit is
+  portable to many different display systems, and in particular, has
+  already been ported to the MS Windows environment.
+
+  With the previewer disabled, fplan can be built on a wide variety of
+  operating systems, including most non-Unix systems.  The specific
+  requirements for building fplan are described below. If you have
+  information regarding building fplan in other environments (Amiga,
+  BeOS, Macintosh MPW, etc.), let me know and I'll update the
+  information.  Below is a list of the software development tools you
+  will need.
+
+     ANSI C Compiler
+        I have converted the fplan source to ANSI C to take advantage of
+        the better error checking that comes with function prototypes.
+        (The original fplan was written in K & R style C). If you don't
+        have an ANSI C compiler, the Free Software Foundation's GNU C
+        compiler is an excellent choice (in addition to being completely
+        free). Note that some of the C library functions used are not
+        part of the ANSI standard, so with some compilers you need to
+        include a flag to enable what is often called extended ANSI mode
+        (for example: -Ae under HP-UX). Although most systems still have
+        these functions, there are implementations of them in the file
+        strings.c just in case.
+
+     Lexical Analyzer Generator
+        You won't actually need lex, flex, or any other lexical analyzer
+        generator, unless you want to change the scanner description
+        file, fp_lex.l. A default scanner is provided in the file
+        fp_lex.c, which was generated with flex. If you use a scanner of
+        your own, it must be lex compatible. To enable lex compatibility
+        with flex, you must include the -l flag on the flex command
+        line.
+
+     Parser Generator
+        You won't need a parser generator either, unless you want to
+        change the parser description file fp_yacc.y. A default parser
+        is provided in the file fp_yacc.c, which was generated using
+        Robert Corbett's byacc. If you use your own parser generator, it
+        should be configured to write fixed output files, y.tab.c and
+        y.tab.h like ATT yacc.  The correct flags for ATT yacc, byacc,
+        and Bison are included in the provided Makefile.
+
+     XView Toolkit
+        If you want to use the default implementation of the graphics
+        previewer under Unix/X11, you will need Sun Microsystem's XView
+        Toolkit. You can also build fplan without the previewer, in
+        which case you don't need XView. The full source code for the
+        XView Toolkit is available from the directory
+
+     o   <ftp://ftp.x.org/R5contrib/xview3.2/>
+
+        You will probably not want to build XView from source (although
+        you can do it). You are better off just installing pre-built
+        binaries, if they are available for your system. Here are some
+        locations where you can obtain pre-built XView binaries for
+        several different platforms
+
+     o  FreeBSD:  <ftp://ftp.freebsd.org/pub/FreeBSD/packages-
+        current/x11/>
+
+     o  HP-UX:  <ftp://ftp.csc.liv.ac.uk/pub/xview3.2/>
+
+     o  Linux:  <ftp://metalab.unc.edu/pub/Linux/X11/libs/xview/>
+
+     o  Sun Solaris: ships with it already installed!
+
+        Of the above, I can vouch only for the HP-UX binaries. They seem
+        to work fine under HP-UX 10.20. I've also successfully tested
+        fplan under Sun Solaris 5.2. If you have better information,
+        drop me a note and I will add or make appropriate corrections to
+        the above list.
+
+     GNOME and Gtk+ Toolkits
+        If you want to use the optional GNOME implementation of the
+        graphics previewer under Unix/X11, you will need the latest
+        gnome-libs (0.99.3 or higher) and the latest Gtk+ libraries.
+        They are available from
+
+     o   <http://www.gnome.org/>
+
+     o   <http://www.gtk.org/>
+
+        Once the GNOME libraries are more widely available (they came
+        out of beta only just recently), the GNOME version will become
+        the default.
+
+     Make Utility
+        Although it's not really essential, it's very helpful to have a
+        make utility. The provided Makefile is not very complicated. It
+        should work with most Unix make utilities, as well as ports of
+        make to non-Unix environments. For building under OS/2 and MS-
+        DOS using the GCC/EMX compiler by Eberhard Mattes, use
+        Makefile.EMX.
+
+  2.4.2.  Configuration and Compilation
+
+  Here is an outline of the steps required to build fplan from source;
+
+  1. Edit the config.h header file to specify the directories where
+     fplan will look for the common, system wide and the user's personal
+     database files. The directory for the common database files must be
+     consistent with where the Makefile will install them (part of the
+     next step).
+
+  2. Edit the Makefile to reflect your environment. You will need to
+     edit various macros to specify which compiler to use, where the
+     XView header and library files reside, and where things should be
+     installed. I won't go into specifics here since each macro you will
+     need to edit is described by comments in the Makefile.
+
+  3. Run "make" to build the executables. If the build fails at some
+     point, it is possible that your changes to the Makefile in the
+     above step don't correctly reflect your environment.
+
+  4. Run "make install" to install the executables. If you are
+     installing fplan in directories like /usr/bin that are owned by
+     root, this step (and the next two) will likely require that you log
+     in as root to have the required privileges.
+
+  5. Run "make install-man" to install the man pages. If you want to
+     install the html format of the user's guide for browsing online,
+     you will need to do that by hand.
+
+  6. To install the database files, unpack the airports.nav and vors.nav
+     files from the database distribution into the build directory. Then
+     run "make install-dbs" to install them into the directory where
+     fplan expects them.
+
+  The user's guide (this document) is written in SGML (Standard
+  Generalized Markup Language) format. SGML documents are translatable
+  into popular formats such as standard HTML as well as LaTeX (and dvi,
+  postscript from there). The converted formats are up to date with
+  respect to the SGML version when the distribution was packaged (by
+  running a "make doc"). If you make changes to the master SGML format
+  documents, you will need the SGMLtools formatting system to update the
+  other formats, available from
+
+  o   <http://www.sgmltools.org/>
+
+  2.4.3.  Building from the Source RPM Package
+
+  For Red Hat Linux users that want to rebuild from source, the RPM
+  format of the source distribution is the obvious choice. If you insist
+  on using graphical user interfaces to do things, you're going to have
+  to grit your teeth this time. Here's an outline of the commands used
+  to rebuild and install the new package;
+
+                    # install the fplan source package
+                    % rpm -Uhv /path_to_src_package/fplan-1.4.2-1.src.rpm
+                    # change to the directory where spec file is located
+                    % cd /usr/src/redhat/SPECS
+                    # build the binary package
+                    % rpm -bb fplan.spec
+                    # install the binary package
+                    % rpm -Uhv ../RPMS/i386/fplan-1.4.2-1.i386.rpm
+
+  Of course, you have to be the root user to do the above. Unlike the
+  binary distribution, you must have the XView header files and
+  libraries installed on your system to rebuild from source. If you
+  don't already have them, you can likely find them from the extensive
+  RPM database maintained by the rpm2html developers at
+
+  o   <http://rufus.w3.org/linux/RPM/>.
+
+  3.  Preparing Flight Plans with fplan
+
+  3.1.  Overview of Creating a Flight Plan
+
+  Creating a flight plan with fplan involves the following basic steps,
+  determining the desired flight route(s), creating a planfile that
+  reflects the desired route(s), and finally feeding the planfile to
+  fplan which then grinds through all the calculations for computing the
+  true and magnetic courses, estimated ground speeds, wind corrected
+  headings, and so on.  This section provides a brief overview of the
+  steps required to create your own flight plans using fplan.
+
+  3.1.1.  Determining the Flight Route
+
+  Any pilot who hasn't been living in a cave has very likely seen some
+  of the commercial flight planning programs currently on the market.
+  Some provide a GUI interface that allows you to point and click on the
+  desired flight waypoints from a "sectional quality" chart display. I'd
+  love to see fplan have this capability, but at this time it is not
+  feasible.  Digital charts of adequate quality (complete with victor
+  airways, airspace boundaries and so forth) are simply not available
+  from NOAA or any other government source at this time (see ``Future
+  Plans'' below).
+
+  For the purpose of determining the best (and safest) flight route,
+  your best resource is still a current NOAA Sectional Chart. While this
+  doesn't rank very high on some people's "Gee Whiz" scale, it provides
+  complete, accurate, and up to date navigational information which,
+  should be an important consideration when preparing a flight plan.
+  Just as with the "old fashioned" approach to flight planning, it's a
+  good idea to mark your flight route(s) on the chart and take it with
+  you on the flight.
+
+  3.1.2.  Creating the planfile
+
+  The next step in the process is to create a planfile that reflects
+  your chosen flight route. The user's personal and system wide or
+  common database files allow you to specify a waypoint by its
+  identifier for the case of an airport or navaid. You can also specify
+  latitude and longitude for general landmarks, an intersection of
+  radials from navaids or airports, or a point relative to an identifier
+  (RNAV coordinates). At this point you may want to browse through some
+  of the example planfiles to get a better feeling for how waypoints can
+  be specified. The provided examples also serve as useful templates for
+  creating your own planfiles. You will need a plain text editor to
+  create the files (such as vi, Xemacs under Unix systems, or the
+  Notepad application under MS-Windows).
+
+  In the case of navaids, you can get the associated identifier directly
+  from a Sectional Chart. In the case of airports, you can refer to the
+  "Airport/Facility Directory" published by NOAA, or similar
+  publications available from commercial sources such as Airguide
+  Publications, Inc.  You should also be aware of the airport identifier
+  convention used by the fplan databases (see ``Airport Identifier
+  Convention''). To verify that your identifiers are consistent with
+  those in the provided databases, use fplan's lookup mode to retrieve
+  the information associated with your identifiers (see ``execution
+  modes'').
+
+  3.1.3.  Further Reading
+
+  At some point in time you should read the following section on the
+  airport and navaid databases distributed with fplan. Impatient or
+  experienced computer users can probably treat the section below that
+  describes the planfile syntax as a reference and examine some of the
+  provided example planfiles to get started. The fplan output is mostly
+  self explanatory, but a section is included below that describes the
+  fplan output in more detail. The fplan manual page provides detailed
+  information on command line options when running fplan.
+
+  3.2.  The Airport and Navaid Databases
+
+  The database files distributed with fplan contain a list of airports,
+  balloonports, gliderports, heliports (in the file airports.nav),
+  fixes, intersections, and navaids (in the file vors.nav).  Two
+  versions of the database are available; the complete version that
+  contains all airports, both public and private usage, and a version
+  with only public usage airports (although they could be privately
+  owned).  At this time the database contains information only for the
+  United States. You may also wish to construct a personal database that
+  contains entries for points of interest in your local area (see
+  ``personal databases''). When trying to locate information for a given
+  identifier, fplan always searches the user's personal databases before
+  searching the system wide, or common databases.
+
+  3.2.1.  Origin of the Database Information
+
+  The databases distributed with fplan were created using information
+  from the (United States) National Flight Data Center. I wrote another
+  software package to reformat the NFDC data (see ``avdbtools'' below)
+  for use with fplan. At one time, the National Flight Data Center
+  distributed the databases on magnetic media only (no doubt one of the
+  reasons that the old fplan database files were not updated very
+  frequently). Now you can get the NFDC database files directly from
+  their world web site at
+
+  o   <http://www.tgf.tc.faa.gov/nfdc/index.html>.
+
+  3.2.2.  Airport Identifier Convention
+
+  This release of the airports.nav database uses the "K" convention to
+  distinguish between airports and navigation aids with the same
+  identifier (a convention used by many GPS manufacturers). In this
+  convention, all airport identifiers that are exactly 3 alphabetic
+  characters long are prefixed by the character, "K", regardless of
+  whether there is a navigational aid with the same identifier or not.
+  Airport identifiers that are longer than 3 characters or contain
+  numeric characters are unchanged. For example, HMT becomes KHMT, L78
+  remains L78, and CL35 remains CL35.
+
+  3.2.3.  Magnetic Variation of Airports and Navaids
+
+  The creation of the fplan database files was greatly complicated by
+  the fact that the navaid files from NFDC no longer had any entry for
+  magnetic variation. To solve this problem, I needed a good model to
+  calculate the magnetic variation for a given latitude and longitude
+  referenced to some datum. I concluded that the best solution was to
+  use one of the geomagnetic field models in common use by the
+  Geophysics community. The two most commonly encountered models are the
+  International Geomagnetic Reference Field, 1995 Revision (IGRF-95),
+  and the United States Department of Defense World Magnetic Model, 1995
+  Revision (WMM-95). In these models, the geomagnetic field potential is
+  represented by a summation of spherical harmonics (using associated
+  Legendre functions). The coefficients are found by fitting the model
+  to precise measurements of the earth's geomagnetic field. A secular
+  change model is used to account for the slow drifting of the earth's
+  magnetic field over time. The models are updated once every five years
+  with the next model due to come out in the year 2000.
+
+  The database files distributed with fplan use the DoD World Magnetic
+  Model, 1995 Revision (WMM-95) to estimate the magnetic variation of
+  all airports and navaids. I could have used the NFDC database entries
+  for variation of airports. However a closer examination of some of the
+  data seemed to suggest that it had not been updated to account for
+  secular change. (Several spot checks did not agree well with values
+  taken from a current NOAA Sectional Chart). For consistency, it seemed
+  best to use the WMM-95 model for both airports and navaids. You can
+  find a more complete discussion of the model physics, accuracy of the
+  models, and my numerical implementation of them in the avdbtools
+  user's guide (see section ``avdbtools'' below).
+
+  3.2.4.  Accuracy of Database with GPS Receivers
+
+  General aviation pilots have discovered the many advantages offered by
+  GPS (Global Positioning System) units in a big way. A GPS receiver,
+  together with a programmable navigation computer running on an
+  embedded microprocessor, provides unsurpassed accuracy and convenience
+  for as little as a few hundred dollars. The accuracy of civilian units
+  that use only the C/A code on frequency L1 are such that the computed
+  position is within 100 meters of the actual position about 95% of the
+  time. However, don't be seduced by the accuracy of the system hardware
+  itself. You probably won't do anywhere near that good using
+  coordinates from this database.
+
+  An issue you need to consider is consistency of datums.  A datum is a
+  set of parameters that define a mathematical ellipsoid designed to
+  approximate the earth's actual surface or geoid (the equatorial radius
+  of the earth is about 21 nautical miles larger than the polar radius).
+  You must specify the latitude, longitude, and the associated datum to
+  uniquely describe a given point on the earth's surface. Most GPS
+  receivers are configured by default to use the World Geodetic System
+  of 1984, or WGS-84 datum, which is also the datum used on NOAA
+  Sectional Charts. Some datums are designed to be a reasonably good fit
+  over most of the earth's surface (like WGS-84), while others are
+  carefully designed to provide the absolute best possible accuracy in a
+  very small area (such as the one that was developed for the
+  construction of the tunnel under the English Channel). Most GPS
+  receivers can be configured to use any one of a wide variety of
+  published datums (my trusty Garmin 89 has 104 choices).
+
+  The error associated with inconsistent datums can be almost a mile in
+  some cases, and is greater than 100 meters to be sure! The bad news is
+  that I have not been able to determine the datum associated with the
+  latitude, longitudes values given in the NFDC databases. It's possible
+  that no uniform datum was used (another possible reason why the NFDC
+  does not represent the database as an official product). Of course you
+  can always validate a latitude, longitude value from the database or a
+  latitude, longitude value calculated by fplan by just taking the few
+  minutes it takes to plot it on a current NOAA Sectional or VFR
+  Terminal Area Chart. This also shows you exactly where a GPS unit
+  (configured for the WGS-84 datum), would take you.
+
+  Don't feel bad if this is all news to you. It seems that even the US
+  military is still educating itself on this issue. During the Gulf War,
+  many of the errors in high altitude B-52 bombing runs over Iraq were
+  traced to inconsistent datums. You can find an interesting discussion
+  of this and datums in general at
+
+  o   <http://www.nima.mil/publications/mcg/sect_7.htm>
+
+  3.2.5.  Other Database Quality Issues
+
+  You should be aware of the fact that the database files from the
+  National Flight Data Center (used to construct the ones distributed
+  with fplan) are not official products approved for navigation. To be
+  more specific, the NFDC world wide web site clearly states, "FOR
+  RESEARCH PURPOSES ONLY -- NOT CERTIFIED FOR NAVIGATION".
+
+  I don't know all the reasons why NFDC makes this disclaimer, they are
+  listed in the "Airport/Facility Guide" as the main point of contact
+  for reporting errors in that information. Funding is no doubt one
+  issue. The issues related to the magnetic variation values discussed
+  above are another obvious reason, but there could easily be many other
+  issues as well. It would be prudent to heed this clear warning and
+  validate information used from the database files with other available
+  sources. For example, if you question the validity of a latitude and
+  longitude value you can simply plot the point on a Sectional Chart.
+  It's only common sense that any database of this size will have errors
+  in it so exercise appropriate care.
+
+  3.2.6.  Creating your own Personal Database
+
+  For your convenience, fplan allows users to have personal databases of
+  their own. They are always searched before the system wide or common
+  database of the same type (airport or VOR). The common database files
+  distributed with fplan only provide coverage for the United States.
+  Users that live outside the United States will want to construct a
+  personal database for their local area. No matter where you live,
+  personal databases are useful for defining things like boundaries of
+  controlled airspace, mountain passes or other geographical points of
+  interest, emergency landing sites, and so on. It may be wise to choose
+  personal identifiers that begin with an underscore (the "_" character)
+  to distinguish them from identifiers in the common database.  This is
+  not a requirement, but it's a useful mechanism for eliminating any
+  possible confusion.
+
+  The format of both the common and personal database files are
+  described in the fplan entry in section 5 of the man pages (users of
+  non-Unix systems can refer to the formatted version of this document
+  in the file fplan_5.ps or fplan_5.txt). Note that the text versions of
+  your personal database files must be processed by the paddb
+  application before they can be read by fplan. You can install your
+  personal database files anywhere you like. Simply set the
+  FPLAN_USER_DBDIR environment variable to the directory where it can be
+  found. (The best place to do this is in the initialization file for
+  your command shell, the ~/.cshrc or ~/.profile files for Unix shell
+  users, the CONFIG.SYS file for OS/2 users, or the AUTOEXEC.BAT file
+  for MS-DOS users).
+
+  3.3.  Description of planfile Syntax
+
+  fplan reads a free format input language to specify the departure and
+  destination airports, intermediate waypoints, fuel on board, fuel burn
+  rates, winds aloft, etc. This section presents a detailed reference
+  for the syntax of the planfile and planfile statements. However, you
+  will likely find the syntax of the fplan language to be largely self
+  explanatory. Impatient or experienced computer users may want to skip
+  this section and examine some of the provided example planfiles
+  instead. In any case, the provided examples serve as useful templates
+  for creating your own planfiles. Here is an overview of the syntax of
+  the planfile;
+
+  o  The planfile consists of any number of statements, each terminated
+     by a semicolon ";" character.
+
+  o  All reserved words of the language and user input tokens must be
+     separated by white spaces (either a blank, comma, tab or newline
+     character).
+
+  o  When fplan encounters a "#" comment character while reading a
+     planfile, all the characters that follow it on that line are
+     silently discarded. Comments can legally appear anywhere in the
+     planfile where a white space is legal. This means it is possible to
+     break a statement up into multiple lines with comments on each
+     line. This often greatly enhances the readability of the planfile.
+
+  o  Reserved words that are part of the language are case sensitive,
+     they must be lowercase. However, identifiers are not case sensitive
+     and may be written in either upper or lower case.
+
+  o  In the case of a conflict between an identifier and an fplan
+     reserved word (for example an airport named VIA), use upper case to
+     prevent fplan from interpreting the identifier as a reserved word
+     of the language.
+
+  3.3.1.  Specifying Units
+
+  In the planfile, the default unit for distance (except for altitudes)
+  is nautical miles and the default unit for speed (such as true
+  airspeed of the aircraft and wind speeds) is knots (nautical miles per
+  hour). You can specify different units by using appropriate keywords
+  after any numeric value. The keywords are
+
+  o  mi, smi - statue miles
+
+  o  nm, nmi - nautical miles
+
+  o  mph - statue miles per hour
+
+  o  knots, kts - nautical miles per hour
+
+  In the output flight plan the default unit for distance is nautical
+  miles and the default unit for speed (such as true airspeed of the
+  aircraft and wind speed) is knots (nautical miles per hour). You can
+  change this to statue miles and statue miles per hour by including the
+  -s flag on the command line.
+
+  3.3.2.  Waypoint Statements
+
+  The planned flight route is specified by of a sequence of waypoint
+  statements which begin with either the from, via, or to reserved
+  words, corresponding to the departure waypoint, enroute waypoints, and
+  destination waypoint, respectively. The planfile can contain more than
+  one route. This is useful for computing several routes ahead of time
+  and selecting the best one on the day of the flight.
+
+  The order in which the databases are searched is different for
+  terminal and enroute waypoints. For the case of a departure or
+  destination waypoint (the from or to keywords), the airports.nav
+  databases are searched first, then the vors.nav databases are searched
+  for the given identifier. For the case of an enroute waypoint (the via
+  keyword), the vors.nav databases are searched first, then the
+  airports.nav databases. In each of these cases, when the airports.nav
+  databases are searched, the user's personal airports.nav database is
+  searched before the system wide, or common airports.nav database.
+  Similarly, when the vors.nav databases are searched, the user's
+  personal vors.nav database is searched before the system wide, or
+  common vors.nav database.  The syntax of the waypoint statements are
+  now described.
+
+     (from|via|to) identifier;
+        Specifies a waypoint by its identifier. It is an error if
+        identifier cannot be found in any of the databases.
+
+     (from|via|to) identifier_1 radial_1 identifier_2 radial_2 { name {
+        city { comment } } };
+        Specifies an intersection waypoint. Both radial_1 and radial_2
+        represent the magnetic direction from the reference points
+        corresponding to the respective identifiers to the desired
+        waypoint. The convention of magnetic direction is a natural
+        choice since VOR radials are magnetic, rather than true. An
+        error is issued if no intersection exists or the intersection is
+        poorly conditioned (when the defining directions are almost
+        parallel to each other). Up to three optional quoted strings
+        corresponding to the name, city, and comment fields in the
+        output form may be specified.  It is an error if identifier_1 or
+        identifier_2 cannot be found in any of the databases.
+
+     (from|via|to) identifier direction / distance { name { city {
+        comment } } };
+        Specifies a relative waypoint (like an entry to an RNAV
+        computer).  The specified direction of the waypoint relative to
+        identifier is assumed to be in degrees magnetic, rather than
+        true. As always, the specified distance is in nautical miles,
+        unless an appropriate distance qualifier keyword is present that
+        specifies otherwise.  One should avoid using a distance that is
+        excessively large because the magnetic variation used for the
+        waypoint is the same value as for identifier (a few tens of
+        nautical miles is not a problem). Up to three optional quoted
+        strings corresponding to the name, city, and comment fields in
+        the output form may be specified. It is an error if identifier
+        cannot be found in any of the databases.
+
+     (from|via|to) latitude longitude variation { name { city { comment
+        } } };
+        Specifies a waypoint by its latitude and longitude. The format
+        for latitude and longitude entries are; integer valued degrees,
+        the ":" character, integer valued arc minutes, the ":"
+        character, decimal arc seconds, a white space, and the north or
+        south keyword for latitude, or the east or west keyword for
+        longitude. The magnetic variation must be specified because it
+        is required to convert a true course to a magnetic one. The
+        format for the magnetic variation entry is; decimal degrees
+        followed by a white space and either the east or west keyword.
+        Up to three optional quoted strings corresponding to the name,
+        city, and comment fields in the output form may be specified.
+
+     via distance { name { city { comment } } };
+        Specifies an incremental waypoint. Note that the incremental
+        waypoint can be used only in an enroute context. If distance is
+        positive, it specifies the distance from or after the last non-
+        incremental waypoint. If negative, the absolute value of
+        distance specifies the distance to or before the next non-
+        incremental waypoint. Incremental waypoints are useful for dead
+        reckoning flight where it is desirable to have checkpoints every
+        so often. They are also a very useful for specifying the end of
+        climb to cruise, or for specifying the beginning of descent
+        (this admits more precise specification of fuel rates, and
+        estimates of fuel consumption). Up to three optional quoted
+        strings corresponding to the name, city, and comment fields in
+        the output form may be specified. Note that successive
+        incremental waypoints still refer to the same previous non-
+        incremental waypoint and not to the last incremental waypoint as
+        one might think. Thus the following two successive waypoint
+        statements refer to exactly the same point
+
+     o  via 10 'point 1';
+
+     o  via 10 'point 2';
+
+  3.3.3.  Fuel Management Statements
+
+  The following statements are used to specify the initial amount of
+  usable fuel on board, the fuel burn rate(s), and any additional fuel
+  used.  In order for fuel consumption computations to be made, the
+  initial amount of usable fuel on board and the fuel burn rate must be
+  specified.
+
+     fuel_amount quantity;
+        Specifies the initial amount of usable fuel on board. The value
+        given for the numeric argument quantity must be a positive
+        number. The units used for quantity are arbitrary; pounds,
+        gallons, imperial gallons, quarts, liters or whatever units
+        happen to be convenient. Note that quantity should not include
+        any unusable fuel on board.  This statement applies to the
+        waypoint at the start of the current leg.  It is an error for
+        this statement to be applied to a waypoint that is not a
+        departure waypoint (specified by the from keyword).
+
+     fuel_rate rate;
+        Specifies the fuel consumption rate. The value given for the
+        numeric argument rate must be a positive number, and in units
+        per hour, where the units used agree with those used in the
+        fuel_amount directive above. This statement applies to the
+        current and all successive legs until another fuel_rate
+        statement is encountered. You may want to include a waypoint for
+        the end of the climb to cruise, and at the start of the descent
+        for landing, so that the fuel rates can be updated for the power
+        settings used (incremental waypoints are a good choice).
+
+     fuel_used quantity;
+        Specifies any additional fuel used that is not accounted for by
+        the enroute flight time and fuel burn rate (such as extra
+        amounts used for taxi, run up, traffic related delays and so
+        on).  The units used for the numeric argument quantity must
+        agree with the units used in the fuel_amount directive to remain
+        consistent. This statement applies to the waypoint at the start
+        of the current leg.
+
+  3.3.4.  Miscellaneous Statements
+
+     alt feet;
+        Specifies the flight altitude in feet above mean sea level. In
+        the current version of fplan, the value is simply copied to the
+        output form, but future versions may use it for density altitude
+        or similar performance related computations.
+
+     comment string;
+        The given string replaces the comment field of the previous
+        waypoint in the route. If this statement appears before the
+        first waypoint statement in the planfile, it has no effect.
+
+     nav number identifier;
+        Specifies that the VOR receiver given by number will be tuned to
+        the station given by identifier. The binary distribution is
+        configured to accept up to 6 navigation receivers. VOR fixes are
+        computed for each receiver and waypoint in the route(s). It is
+        an error if identifier cannot be found in any of the databases.
+
+        Note that when auto track is enabled (default is disabled),
+        receiver 1 is automatically tuned to the next waypoint (if it is
+        a navigation aid), or to the previous waypoint (if it is a
+        navigation aid) and user specified values for nav 1 are silently
+        ignored. Auto track can be enabled with the -t command line
+        switch.
+
+     tas speed;
+        Specifies the true airspeed of the aircraft. This statement
+        applies to the current and all successive legs until another tas
+        statement is encountered. If no tas statement is included in the
+        planfile, enroute time and fuel consumption estimates can not be
+        made.
+
+     wind direction @ speed;
+        Specifies the direction and speed of winds aloft. The direction
+        argument must be in units of degrees relative to true north.
+        This is the convention used in the winds aloft forecast from
+        Flight Service. (Recall that winds are always reported in
+        degrees with respect to true north, except when reported by the
+        control tower or in (automated) airport surface observations, in
+        which case they are relative to magnetic north, as runways are).
+        This statement applies to the current and all successive legs
+        until another wind statement is encountered. If no wind
+        statement is included in the planfile, the winds aloft are
+        assumed to be calm.
+
+  3.4.  Execution of fplan
+
+  In this section, we provide a brief overview of running fplan. For a
+  complete reference on command line syntax and options, see the
+  provided man page. fplan can be run in one of four different major
+  modes which are described below. The different modes are selected by
+  using the appropriate flag as the first command line option.
+
+     Normal Mode
+        In normal or default mode, the given planfile is parsed, the
+        flight route(s) are computed, and a flight plan including wind
+        corrected headings, distance, estimated time, and fuel
+        consumption for each leg, VOR fixes for each checkpoint, and so
+        on, are written to the standard output. Normal mode is the
+        default mode of operation and does not require any special flag
+        as the first command line option.
+
+     Graphics Mode
+        In graphics mode, the specified planfile is parsed, the flight
+        route(s) are computed, and the results are displayed in an XView
+        window. (For Unix/X11 systems with the XView Toolkit only, also
+        installation dependent). The window includes buttons for
+        scrolling the chart to the first and last waypoints, as well as
+        for setting the magnification scale factor of the chart.
+        Graphics mode is selected by using -g as the first command line
+        option.
+
+     Lookup Mode
+        In the lookup mode of operation, all remaining command line
+        arguments are assumed to be airport or navaid identifiers. fplan
+        will search the user's personal and system wide databases and
+        will print information for each match to the standard output. If
+        any identifier was found in both the airports and navaid
+        databases, then both entries are printed. Lookup mode is
+        selected by using -l as the first command line option.
+
+     Reverse Mode
+        In reverse mode, the given planfile is parsed, the flight
+        route(s) are computed, and a planfile for the return trip is
+        written to the standard output. All waypoints are reversed and
+        incremental waypoints are recomputed. Correct directives are
+        included so that each waypoint uses the same VORs as in the
+        input planfile. Fuel, altitude, airspeed and wind statements are
+        not included in the reversed planfile. They may be included in a
+        future release. Reverse mode is selected by using -r as the
+        first command line option.
+
+  3.5.  Computed Courses and Headings
+
+  Although there are an infinite number of courses that connect two
+  given points on the earth's surface, there are only two meaningful
+  ones, the great circle and rhumb line courses. By definition, the
+  great circle course minimizes the distance traveled. It can be
+  visualized as the intersection of the earth's surface with the unique
+  plane defined by the center of the earth and the two given points. A
+  great circle course appears as a straight line on a chart that uses
+  the Gnomonic projection system. The disadvantage of the great circle
+  course is that the (calm wind) heading with respect to true north is
+  not constant, except for the special case where the two given points
+  are on the same meridian (i.e., have identical longitude). Great
+  circle courses and close approximations to them are routinely used on
+  long distance transcontinental flights.
+
+  This release of fplan computes a rhumb line course. By definition, it
+  is the constant (calm wind) heading course that connects the two given
+  points. A rhumb line course appears as a straight line on a chart that
+  uses the Mercator projection system. At mid latitudes, the extra
+  distance traveled for the rhumb line course is small when the points
+  are a few tens or hundreds of nautical miles apart. The rhumb line
+  course is probably a better choice than the great circle course for
+  general aviation use. The only corrections to the estimated headings
+  for each leg that the pilot needs to be concerned about, are those
+  corrections associated with changing winds aloft.
+
+  3.6.  Description of fplan Output
+
+  The fplan output consists of three distinct groups of columns; the
+  waypoint information columns, the flight leg columns, and the optional
+  VOR fix columns (disabled by default, and enabled with the -w command
+  line option). In the fplan output, each route begins with a group of
+  header lines. They contain symbolic entries that describe the numeric
+  entry at that position in the data that follows. Most of them are self
+  explanatory, but because of space limitations, some of them are not
+  obvious.  They are documented here for completeness.
+
+  3.6.1.  Waypoint Information
+
+  o  WAYPOINT - waypoint or facility name (from database or planfile)
+
+  o  CITY, ST - associated city and state (from database or planfile)
+
+  o  COMMENTS - additional comments (from database or planfile)
+
+  o  IDENT - facility identifier (from the database)
+
+  o  TYPE - fplan waypoint type (from the planfile)
+
+  o  LAT LON - latitude and longitude (datum unknown)
+
+  o  FREQ - facility frequency (from the database)
+
+  o  ELEV - facility elevation (from the database)
+
+  o  TOTD - total distance traveled to waypoint (computed by fplan)
+
+  o  REMD - total distance remaining to waypoint (computed by fplan)
+
+  o  FUEL - usable fuel remaining at waypoint (estimated by fplan)
+
+  o  ETA - estimated time of arrival at waypoint (estimated by fplan)
+
+  o  ATA - actual time of arrival at waypoint (blank for pilot's entry)
+
+  3.6.2.  Flight Leg Information
+
+  o  WIND - winds aloft (degrees true, from the planfile)
+
+  o  MC - magnetic course for this leg (computed by fplan)
+
+  o  MH - magnetic heading for this leg (estimated by fplan)
+
+  o  TAS - true airspeed (from the planfile)
+
+  o  EGS - estimated ground speed (estimated by fplan)
+
+  o  AGS - actual ground speed (blank for pilot's entry)
+
+  o  DIST - distance traveled for this leg (computed by fplan)
+
+  o  ETE - estimated time enroute for this leg (estimated by fplan)
+
+  o  ATE - actual time enroute for this leg (blank for pilot's entry)
+
+  o  ALT - MSL altitude for this leg (from the planfile)
+
+  o  FRATE - fuel burn rate for this leg (from the planfile)
+
+  o  FUSED - fuel used for this leg (estimated by fplan)
+
+  3.6.3.  VOR Fix Information
+
+  o  [1-6] - navigation receiver number (from the planfile)
+
+  o  IDENT - facility identifier (from the database)
+
+  o  FREQ - facility frequency (from the database)
+
+  o  RAD - magnetic radial to waypoint (computed by fplan)
+
+  o  DME - over ground distance to waypoint (computed by fplan)
+
+  3.7.  Hints for Printing fplan Output
+
+  Note that fplan sends all of its output to the standard output, which
+  in most environments is the terminal screen. If you want to capture
+  the output to a file or print it, you will need to redirect the
+  standard output. On most systems you can redirect the standard output
+  to a file by appending "> filename" to the end of the fplan command
+  line (without the quotes).
+
+  To be useful in practice, we want a hardcopy of the flight plan that
+  is as legible as possible. In the cockpit, it is desirable to quickly
+  extract needed information, so we don't get too distracted from other
+  tasks that are placing demands on our attention. Since the output from
+  fplan is typically wider than the standard 80 columns supported by the
+  default portrait mode of most printers, we will need some type of
+  print utility software (that supports landscape mode and maybe
+  selectable fonts) to get the best possible results. Note that you must
+  print fplan output using fixed width fonts. If you print fplan output
+  using fonts with proportional spacing (like most fonts used in word
+  processors), the columns will no longer be aligned properly, rendering
+  the output unreadable.
+
+  3.7.1.  Printing on Unix Systems
+
+  On Unix systems, the print utilities a2ps and nenscript are both good
+  choices for pretty printing fplan output.  Both support landscape
+  orientation and selectable fonts, and both generate postscript output.
+  If you are like me and don't have a printer with hardware support for
+  postscript, don't worry. Just get the ghostscript package and follow
+  the instructions for installing it as a printer filter. (Note that you
+  don't have to install it as a filter, but it most definitely provides
+  maximum ease of use).
+
+  For the a2ps utility, you will likely want to include the following
+  options; -1 to select one virtual page per physical page for maximum
+  readability, --landscape to enable landscape orientation, --columns-
+  per-page=98 to specify the width of the output (the value given works
+  for fplan wide format output with two VOR fixes), and possibly
+  --encoding=PCG to enable support for IBM PC Graphics characters (they
+  are present when fplan is run with the -e flag).
+
+  For the nenscript utility, you will likely want to include the
+  following options; -1 to select single column output for maximum
+  readability, -r to enable landscape orientation, -f font to specify
+  the font (for fplan wide format output with two VOR fixes, Courier12
+  works very well).
+
+  3.7.2.  Printing on OS/2 and MS-DOS Systems
+
+  3.8.  Inherent Limitations of fplan
+
+  3.8.1.  Spherical Trigonometry
+
+  The algorithms used by fplan for computing the course and distance
+  between two waypoints, as well as the algorithms used to compute the
+  location of intersection and relative waypoints have some practical
+  limitations. Columbus was right, the earth is not flat, but it's not a
+  perfect sphere either. The earth's shape is best described as an
+  ellipsoid with the equatorial radius about 21 nautical miles larger
+  than the polar radius. fplan uses algorithms based on spherical
+  trigonometry which don't exactly account for the ellipsoidal shape of
+  the earth's surface.  The approximation used is quite reasonable
+  provided that the distance between waypoints, or the distance from the
+  defining identifier(s) and intersection or relative waypoints is not
+  too large (a few tens of nautical miles is not a problem).
+
+  4.  Additional Information
+
+  4.1.  Code History
+
+  Although this software retains the name fplan, it is a derivative of
+  the original work of Steve Tynor.  His last public release was version
+  1.3, which was posted to volume 30 of the USENET newsgroup,
+  comp.sources.misc in 1992.
+
+  I've been using fplan to prepare flight plans since release 1.2, so
+  I've had the opportunity to use it in practice and formulate some
+  ideas for possible improvements. The unusual El Nino driven rains we
+  experienced in San Diego during the first few months of 1998 are
+  largely responsible for this effort. One rain soaked weekend in Jan I
+  decided to implement some of the improvements from my own want list
+  (as a flimsy substitute for actually getting my feet off the ground).
+  I later contacted Steve Tynor with these changes. He indicated he was
+  busy with other things and was no longer actively maintaining fplan.
+  I decided to expand the scope of my improvements enough to get things
+  back to a point where more pilots will be inclined to use it again and
+  contribute to further development of it. The name fplan was retained
+  with Steve's blessing.
+
+  4.2.  Future Plans
+
+  4.2.1.  Graphical User Interface
+
+  Planning and preparations for a graphical user interface for fplan
+  have begun. This will let users construct, load, and save planfiles
+  using a point and click interface. Michael K. Johnson
+  <johnsonm@redhat.com> has started this effort by writing an
+  implementation of the graphical previewer based on the Gnome, Gtk+,
+  Glib libraries.  Michael quickly convinced me that the Gnome
+  environment would be the best choice for further development of a GUI
+  interface, and fplan is now officially part of the Gnome Project.  As
+  a result, the fplan project now has a CVS repository to facilitate
+  development by multiple programmers (also see ``Mailing List'' below).
+  A final product is not due for awhile, the fplan internal data
+  structures will require some extensive modifications before work can
+  proceed.
+
+  4.2.2.  Planning from Digital Charts
+
+  Some of the currently available commercial flight planning programs
+  provide a GUI interface that allows you to point and click on the
+  desired flight waypoints from a "sectional quality" chart display. Of
+  course, I agree with those who think this is a very desirable feature.
+  However, any digital chart (hybrid raster and vector) that could be
+  assembled from data currently available from government sources would
+  be inferior to hardcopy NOAA Sectional Charts. (This is consistent
+  with the observation that the cost of digital chart updates from these
+  commercial offerings range from kinda, to really expensive).
+  Hopefully, NOAA will someday release their charts in a digital form at
+  prices comparable with current hardcopy charts (and using data formats
+  that are open to the public). When good quality digital charts become
+  a reality, I will become motivated to develop a similar GUI front end
+  for fplan. You can get the current status of efforts in this area from
+  the NOAA Office of Aeronautical Charting and Cartography web site at
+
+  o   <http://acc.nos.noaa.gov/>
+
+  4.2.3.  Interfacing with GPS Units
+
+  Of the other possible fplan improvements I've thought of, the one that
+  most interests me is a better interface with GPS receivers.  I suspect
+  that most other pilots who have GPS capability are like myself.  I
+  prefer using it over VORs because of the accuracy, the flexibility and
+  freedom it offers in constructing a flight route, as well as the
+  reduced cockpit work loads. (At the same time I'm quite wary of the
+  planned decommission of the VOR system. It's important to have a back
+  up system available if possible).
+
+  Systems like GPS and INS have a unique set of problems when it comes
+  to human factors. Incorrectly entering a waypoint can be the start of
+  much bigger problems.  The ability to generate a waypoint or route
+  file (in a format such that it can be uploaded directly to your GPS
+  receiver) from an fplan route would be a very nifty capability. There
+  is already an abundance of freely distributable programs for uploading
+  and downloading route and waypoint files to many popular GPS units.
+
+  4.3.  Mailing List
+
+  The Gnome Project now hosts a mailing list for fplan developers. The
+  list is intended to provide a forum for the discussion of fplan
+  development tasks and design issues. The list is open to all who would
+  like to participate in fplan development, contribute ideas or
+  suggestions, or simply lurk to keep track of where things are going.
+  To join the list, send a mail message with the subject "subscribe" and
+  an empty body to
+
+  o  <fplan-list-request@gnome.org>
+
+  4.4.  Other Software
+
+  4.4.1.  avdbtools
+
+  The databases distributed with fplan were created using the avdbtools
+  package (short for aviation database tools). The package is a
+  collection of software designed to assist in creating and maintaining
+  databases for aviation applications. As of this release, avdbtools
+  consists of a single application that reads the databases distributed
+  by the (United States) National Flight Data Center, and converts them
+  into formats usable by other aviation related applications (fplan and
+  ICAO map to be specific).  More information can be found on the
+  avdbtools page at
+
+  o   <http://metalab.unc.edu/fplan/avdbtools/>
+
+  4.5.  Acknowledgements
+
+  4.5.1.  Contributors
+
+  Michael K. Johnson <johnsonm@redhat.com> contributed the
+  implementation of the graphical previewer based on the Gnome, Gtk+,
+  Glib libraries.  He is also working on a configurable, template based
+  Postscript(tm) format output for flight plans.
+
+  4.5.2.  Other Acknowledgements
+
+  I want to thank Steve Tynor for authoring fplan and making it freely
+  available for everyone to use and enjoy. The high quality of his work
+  made it easy for me to gain a level of understanding of the fplan
+  internals sufficient to make changes and improvements of my own. I
+  also want to extend my gracious thanks to both METALab and the
+  University of North Carolina at Chapel Hill for providing space on
+  their web server for the fplan home page.
+
+  4.6.  Contacting the Author
+
+  If you find a bug in this software (especially if you also have a
+  patch for it) you can contact me by electronic mail at
+  <jaypee@netcom.com>.  Questions, comments, or suggestions are welcome.
+  I respond to all my e-mail, but please remember, this is a free
+  software project and I do prefer flying real aircraft over playing
+  with my computer, so don't be alarmed if you don't get an immediate
+  reply.
+
